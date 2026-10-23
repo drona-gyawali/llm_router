@@ -90,4 +90,5 @@ frontend/build/
 # ML
 # ============================================================
 *.npy
-
+data/routing/thresholds.json
+data/thresholds.json
