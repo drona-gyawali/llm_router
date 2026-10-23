@@ -1,0 +1,50 @@
+{"id": "dat_pos_001", "text": "Write a BigQuery SQL to find users who signed up but never logged in.", "label": 1}
+{"id": "dat_pos_002", "text": "How do I calculate the 7-day rolling average in SQL?", "label": 1}
+{"id": "dat_pos_003", "text": "Write a pandas script to merge two dataframes on multiple keys.", "label": 1}
+{"id": "dat_pos_004", "text": "Why is my BigQuery query reading 500GB when the table is only 10GB?", "label": 1}
+{"id": "dat_pos_005", "text": "Write a SQL query to calculate retention rate by signup cohort.", "label": 1}
+{"id": "dat_pos_006", "text": "How do I detect outliers in this numerical dataset using Python?", "label": 1}
+{"id": "dat_pos_007", "text": "Write a dbt model to calculate weekly active users from event logs.", "label": 1}
+{"id": "dat_pos_008", "text": "Why is my streaming pipeline accumulating lag during peak hours?", "label": 1}
+{"id": "dat_pos_009", "text": "Write a SQL query to calculate average order value by user segment.", "label": 1}
+{"id": "dat_pos_010", "text": "How do I validate that this data pipeline produces consistent results?", "label": 1}
+{"id": "dat_pos_011", "text": "Write a Python script to profile memory usage across a pandas pipeline.", "label": 1}
+{"id": "dat_pos_012", "text": "How do I efficiently compute percentiles for a billion-row table in BigQuery?", "label": 1}
+{"id": "dat_pos_013", "text": "Write a SQL query to identify the critical path in our conversion funnel.", "label": 1}
+{"id": "dat_pos_014", "text": "How do I handle late-arriving events in a Dataflow streaming pipeline?", "label": 1}
+{"id": "dat_pos_015", "text": "Write a pandas script to pivot monthly sales data by region and product.", "label": 1}
+{"id": "dat_pos_016", "text": "How do I calculate DAU to MAU ratio from our event tracking data?", "label": 1}
+{"id": "dat_pos_017", "text": "Write a SQL query to find the top 10 customers by lifetime value.", "label": 1}
+{"id": "dat_pos_018", "text": "Why does my pandas merge produce more rows than either input table?", "label": 1}
+{"id": "dat_pos_019", "text": "Write a BigQuery scheduled query to refresh this reporting table daily.", "label": 1}
+{"id": "dat_pos_020", "text": "How do I standardize column names across multiple CSV files in Python?", "label": 1}
+{"id": "dat_pos_021", "text": "Write a SQL window function to calculate month-over-month revenue growth.", "label": 1}
+{"id": "dat_pos_022", "text": "How do I implement slowly changing dimensions in our data warehouse?", "label": 1}
+{"id": "dat_pos_023", "text": "Write a Python script to generate a correlation matrix for these model features.", "label": 1}
+{"id": "dat_pos_024", "text": "Write a SQL query to identify duplicate records across multiple columns.", "label": 1}
+{"id": "dat_pos_025", "text": "How do I cluster a BigQuery table to improve analytical query performance?", "label": 1}
+{"id": "dat_neg_001", "text": "Implement a rate limiter using the token bucket algorithm in Go.", "label": 0}
+{"id": "dat_neg_002", "text": "What are the tradeoffs between eventual and strong consistency?", "label": 0}
+{"id": "dat_neg_003", "text": "Write a launch announcement for our new data platform product.", "label": 0}
+{"id": "dat_neg_004", "text": "Should we migrate to microservices or keep our monolithic architecture?", "label": 0}
+{"id": "dat_neg_005", "text": "Summarize the key risks identified in this data migration proposal.", "label": 0}
+{"id": "dat_neg_006", "text": "What does idempotent mean in the context of API design?", "label": 0}
+{"id": "dat_neg_007", "text": "Write a Dockerfile for our Python-based API service.", "label": 0}
+{"id": "dat_neg_008", "text": "Analyze whether we should adopt GraphQL for our internal APIs.", "label": 0}
+{"id": "dat_neg_009", "text": "Write a creative description of our data team for the company website.", "label": 0}
+{"id": "dat_neg_010", "text": "What is the difference between a process and a thread?", "label": 0}
+{"id": "dat_neg_011", "text": "Fix the memory leak in this Python async service.", "label": 0}
+{"id": "dat_neg_012", "text": "Extract all the open questions from this system design document.", "label": 0}
+{"id": "dat_neg_013", "text": "What are the security implications of our current API key rotation policy?", "label": 0}
+{"id": "dat_neg_014", "text": "Write a blog post explaining our approach to platform reliability.", "label": 0}
+{"id": "dat_neg_015", "text": "What does a reverse proxy do in a web architecture?", "label": 0}
+{"id": "dat_neg_016", "text": "Write unit tests for this user authentication service.", "label": 0}
+{"id": "dat_neg_017", "text": "Evaluate the long-term risks of our current vendor lock-in situation.", "label": 0}
+{"id": "dat_neg_018", "text": "Write a fun welcome message for engineers joining our analytics team.", "label": 0}
+{"id": "dat_neg_019", "text": "What is the difference between horizontal and vertical database scaling?", "label": 0}
+{"id": "dat_neg_020", "text": "Debug why this Kubernetes deployment keeps failing the health check.", "label": 0}
+{"id": "dat_neg_021", "text": "Summarize the conclusions from this quarterly business review document.", "label": 0}
+{"id": "dat_neg_022", "text": "Should we adopt event sourcing for our new order management system?", "label": 0}
+{"id": "dat_neg_023", "text": "Write an engaging README introduction for our platform SDK.", "label": 0}
+{"id": "dat_neg_024", "text": "What does CORS stand for and why does it matter for our API?", "label": 0}
+{"id": "dat_neg_025", "text": "Implement a circuit breaker for our external payment provider calls.", "label": 0}

@@ -1,0 +1,50 @@
+{"id": "ref_rea_001", "text": "Compare the tradeoffs between Kafka and Google Pub/Sub for our use case."}
+{"id": "ref_rea_002", "text": "Analyze this system design and identify potential single points of failure."}
+{"id": "ref_rea_003", "text": "Should we use microservices or a monolith for this new product?"}
+{"id": "ref_rea_004", "text": "What are the long-term risks of using this third-party dependency?"}
+{"id": "ref_rea_005", "text": "Evaluate these two database schemas and recommend the better one."}
+{"id": "ref_rea_006", "text": "What is the best strategy for migrating this legacy system with zero downtime?"}
+{"id": "ref_rea_007", "text": "Analyze the security implications of this API design."}
+{"id": "ref_rea_008", "text": "Should we build this feature in-house or use an external vendor?"}
+{"id": "ref_rea_009", "text": "What are the scalability bottlenecks in this architecture?"}
+{"id": "ref_rea_010", "text": "Compare PostgreSQL vs BigQuery for storing and querying our event logs."}
+{"id": "ref_rea_011", "text": "Reason through why our system latency spikes every Tuesday morning."}
+{"id": "ref_rea_012", "text": "What is the most cost-effective way to scale this service to 10x traffic?"}
+{"id": "ref_rea_013", "text": "Analyze the tradeoffs between eventual consistency and strong consistency here."}
+{"id": "ref_rea_014", "text": "Should we prioritize this technical debt or ship the new feature first?"}
+{"id": "ref_rea_015", "text": "What would happen to our system if this core service went down for 1 hour?"}
+{"id": "ref_rea_016", "text": "Evaluate the pros and cons of adopting GraphQL for our API layer."}
+{"id": "ref_rea_017", "text": "What is the best caching strategy for this read-heavy workload?"}
+{"id": "ref_rea_018", "text": "Reason through the failure modes of this distributed transaction."}
+{"id": "ref_rea_019", "text": "Should we rewrite this service in Go or keep it in Python?"}
+{"id": "ref_rea_020", "text": "What are the compliance risks of storing this data in a US-only region?"}
+{"id": "ref_rea_021", "text": "Analyze whether this feature request aligns with our platform strategy."}
+{"id": "ref_rea_022", "text": "What is the expected impact on our p99 latency if we add this middleware?"}
+{"id": "ref_rea_023", "text": "Compare gRPC vs REST for internal service to service communication."}
+{"id": "ref_rea_024", "text": "Should we use a feature flag or a separate deployment for this rollout?"}
+{"id": "ref_rea_025", "text": "What are the privacy implications of logging this user data?"}
+{"id": "ref_rea_026", "text": "Reason through the best sharding strategy for this database at scale."}
+{"id": "ref_rea_027", "text": "Evaluate the risk of upgrading this dependency across all our services."}
+{"id": "ref_rea_028", "text": "What is the most reliable way to handle idempotency in this payment flow?"}
+{"id": "ref_rea_029", "text": "Analyze the cost implications of switching from EC2 to Cloud Run."}
+{"id": "ref_rea_030", "text": "Should we use synchronous or asynchronous processing for this pipeline?"}
+{"id": "ref_rea_031", "text": "What are the observability gaps in our current monitoring setup?"}
+{"id": "ref_rea_032", "text": "Reason through why this algorithm produces incorrect results on edge cases."}
+{"id": "ref_rea_033", "text": "Compare the developer experience tradeoffs of these two API designs."}
+{"id": "ref_rea_034", "text": "What is the best rollback strategy if this deployment goes wrong?"}
+{"id": "ref_rea_035", "text": "Analyze the impact of network partitions on this consensus algorithm."}
+{"id": "ref_rea_036", "text": "Should we rate limit per user or per team for this internal API?"}
+{"id": "ref_rea_037", "text": "What are the hidden costs of this open source solution vs building our own?"}
+{"id": "ref_rea_038", "text": "Reason through the best data retention policy for our audit logs."}
+{"id": "ref_rea_039", "text": "Evaluate whether this ML model is production-ready based on these metrics."}
+{"id": "ref_rea_040", "text": "What is the most maintainable architecture for this multi-tenant system?"}
+{"id": "ref_rea_041", "text": "Analyze the tradeoffs of normalizing vs denormalizing this database schema."}
+{"id": "ref_rea_042", "text": "Should we invest in improving test coverage or fixing known bugs first?"}
+{"id": "ref_rea_043", "text": "What are the consequences of removing this backward-compatible API endpoint?"}
+{"id": "ref_rea_044", "text": "Reason through the best load balancing strategy for this stateful service."}
+{"id": "ref_rea_045", "text": "Compare the operational complexity of Kubernetes vs Cloud Run for our team."}
+{"id": "ref_rea_046", "text": "What is the most robust way to handle partial failures in this batch job?"}
+{"id": "ref_rea_047", "text": "Analyze whether we should adopt a service mesh for our microservices."}
+{"id": "ref_rea_048", "text": "Should we use optimistic or pessimistic locking for this concurrent update?"}
+{"id": "ref_rea_049", "text": "What is the business impact of a 200ms increase in API response time?"}
+{"id": "ref_rea_050", "text": "Reason through the best strategy for gradually deprecating this legacy API."}

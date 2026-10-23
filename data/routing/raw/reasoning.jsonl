@@ -1,0 +1,50 @@
+{"id": "rea_pos_001", "text": "Should we adopt a service mesh or handle observability at the application level?", "label": 1}
+{"id": "rea_pos_002", "text": "What are the tradeoffs of using feature flags versus blue-green deployments?", "label": 1}
+{"id": "rea_pos_003", "text": "Evaluate whether we should migrate our cron jobs to Cloud Scheduler.", "label": 1}
+{"id": "rea_pos_004", "text": "What is the best strategy for reducing our BigQuery costs by 40%?", "label": 1}
+{"id": "rea_pos_005", "text": "Should we use optimistic UI updates or wait for server confirmation?", "label": 1}
+{"id": "rea_pos_006", "text": "Analyze the risk of deprecating our v1 API while v2 is still in beta.", "label": 1}
+{"id": "rea_pos_007", "text": "What is the most resilient architecture for handling payment processing failures?", "label": 1}
+{"id": "rea_pos_008", "text": "Compare the long-term maintainability of these two authentication approaches.", "label": 1}
+{"id": "rea_pos_009", "text": "Should we prioritize reducing tech debt or building the next major feature?", "label": 1}
+{"id": "rea_pos_010", "text": "What would be the impact on engineers if we enforced strict API versioning?", "label": 1}
+{"id": "rea_pos_011", "text": "Analyze whether our current alerting setup will scale to 10x the traffic.", "label": 1}
+{"id": "rea_pos_012", "text": "What are the risks of allowing engineers to directly query the production database?", "label": 1}
+{"id": "rea_pos_013", "text": "Should we build a shared component library or let each team own their own UI?", "label": 1}
+{"id": "rea_pos_014", "text": "Evaluate the tradeoffs of moving from REST to event-driven architecture.", "label": 1}
+{"id": "rea_pos_015", "text": "What is the safest rollout strategy for this breaking change to 500 internal users?", "label": 1}
+{"id": "rea_pos_016", "text": "Analyze the long-term cost of maintaining two separate authentication systems.", "label": 1}
+{"id": "rea_pos_017", "text": "Should we invest in improving test coverage or fixing the known production bugs first?", "label": 1}
+{"id": "rea_pos_018", "text": "What are the privacy implications of logging full request bodies in our API?", "label": 1}
+{"id": "rea_pos_019", "text": "Compare the operational burden of Kubernetes versus Cloud Run for a team of five.", "label": 1}
+{"id": "rea_pos_020", "text": "What is the best data retention policy for our compliance audit logs?", "label": 1}
+{"id": "rea_pos_021", "text": "Should we use synchronous or asynchronous processing for this critical pipeline?", "label": 1}
+{"id": "rea_pos_022", "text": "Evaluate the risk of upgrading this core library across all forty of our services.", "label": 1}
+{"id": "rea_pos_023", "text": "What are the hidden costs of this open source solution versus building in-house?", "label": 1}
+{"id": "rea_pos_024", "text": "Analyze the consequences of removing backward compatibility from our public API.", "label": 1}
+{"id": "rea_pos_025", "text": "Should we rate limit by individual user or by team for this internal platform API?", "label": 1}
+{"id": "rea_neg_001", "text": "Write a Python function to implement a least recently used cache.", "label": 0}
+{"id": "rea_neg_002", "text": "What does idempotent mean in the context of HTTP methods?", "label": 0}
+{"id": "rea_neg_003", "text": "Summarize the open action items from this sprint retrospective document.", "label": 0}
+{"id": "rea_neg_004", "text": "Write a tagline for our new internal monitoring tool.", "label": 0}
+{"id": "rea_neg_005", "text": "Write a BigQuery query to calculate the p99 latency for each endpoint.", "label": 0}
+{"id": "rea_neg_006", "text": "What is the difference between a thread and a coroutine?", "label": 0}
+{"id": "rea_neg_007", "text": "Fix the off-by-one error in this array iteration logic.", "label": 0}
+{"id": "rea_neg_008", "text": "Extract the rollback procedure from this deployment runbook.", "label": 0}
+{"id": "rea_neg_009", "text": "Write an inspiring vision statement for our platform engineering team.", "label": 0}
+{"id": "rea_neg_010", "text": "How do I efficiently deduplicate a large pandas dataframe?", "label": 0}
+{"id": "rea_neg_011", "text": "What does a circuit breaker pattern do?", "label": 0}
+{"id": "rea_neg_012", "text": "Write a Kubernetes deployment manifest for our API service.", "label": 0}
+{"id": "rea_neg_013", "text": "Give me a one-paragraph summary of this vendor evaluation report.", "label": 0}
+{"id": "rea_neg_014", "text": "Write a SQL window function to calculate cumulative revenue by month.", "label": 0}
+{"id": "rea_neg_015", "text": "Draft a blog post about how our team improved deployment frequency.", "label": 0}
+{"id": "rea_neg_016", "text": "What does sharding mean in database systems?", "label": 0}
+{"id": "rea_neg_017", "text": "Write a GitHub Actions workflow for running our test suite on pull requests.", "label": 0}
+{"id": "rea_neg_018", "text": "What are the success metrics defined in this project charter document?", "label": 0}
+{"id": "rea_neg_019", "text": "Write a pandas script to reshape this dataset from wide to long format.", "label": 0}
+{"id": "rea_neg_020", "text": "What does fan-out mean in distributed systems?", "label": 0}
+{"id": "rea_neg_021", "text": "Implement retry logic with exponential backoff in TypeScript.", "label": 0}
+{"id": "rea_neg_022", "text": "Summarize the key findings from this performance testing report.", "label": 0}
+{"id": "rea_neg_023", "text": "Write a fun onboarding message for engineers joining our infrastructure team.", "label": 0}
+{"id": "rea_neg_024", "text": "How do I partition a BigQuery table to reduce scan costs?", "label": 0}
+{"id": "rea_neg_025", "text": "What is the difference between concurrency and parallelism?", "label": 0}

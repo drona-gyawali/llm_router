@@ -1,0 +1,50 @@
+{"id": "gen_pos_001", "text": "What is the difference between a monolith and microservices?", "label": 1}
+{"id": "gen_pos_002", "text": "What does API versioning mean?", "label": 1}
+{"id": "gen_pos_003", "text": "What is a message broker?", "label": 1}
+{"id": "gen_pos_004", "text": "What does zero downtime deployment mean?", "label": 1}
+{"id": "gen_pos_005", "text": "What is the difference between a VM and a container?", "label": 1}
+{"id": "gen_pos_006", "text": "What does eventual consistency mean in plain terms?", "label": 1}
+{"id": "gen_pos_007", "text": "What is an SLO and how is it different from an SLA?", "label": 1}
+{"id": "gen_pos_008", "text": "What does blue-green deployment mean?", "label": 1}
+{"id": "gen_pos_009", "text": "What is the difference between a library and a framework?", "label": 1}
+{"id": "gen_pos_010", "text": "What does canary release mean in software deployment?", "label": 1}
+{"id": "gen_pos_011", "text": "What is the difference between caching and memoization?", "label": 1}
+{"id": "gen_pos_012", "text": "What does idempotent operation mean?", "label": 1}
+{"id": "gen_pos_013", "text": "What is a service mesh?", "label": 1}
+{"id": "gen_pos_014", "text": "What does distributed tracing help us understand?", "label": 1}
+{"id": "gen_pos_015", "text": "What is the difference between polling and webhooks?", "label": 1}
+{"id": "gen_pos_016", "text": "What does it mean for a system to be observable?", "label": 1}
+{"id": "gen_pos_017", "text": "How does authentication differ from authorization in access control?", "label": 1}
+{"id": "gen_pos_018", "text": "Can you explain what ACID properties guarantee in a database?", "label": 1}
+{"id": "gen_pos_019", "text": "What is a deadlock and how does it occur?", "label": 1}
+{"id": "gen_pos_020", "text": "What does it mean when a system fans out a message to multiple consumers?", "label": 1}
+{"id": "gen_pos_021", "text": "How is latency different from throughput when measuring system performance?", "label": 1}
+{"id": "gen_pos_022", "text": "What role does a reverse proxy play in a web application stack?", "label": 1}
+{"id": "gen_pos_023", "text": "How is running tasks concurrently different from running them in parallel?", "label": 1}
+{"id": "gen_pos_024", "text": "What does garbage collection do in a programming language runtime?", "label": 1}
+{"id": "gen_pos_025", "text": "What is the difference between strong consistency and eventual consistency?", "label": 1}
+{"id": "gen_neg_001", "text": "Write a Python function to implement a binary search algorithm.", "label": 0}
+{"id": "gen_neg_002", "text": "Should we use Kafka or Pub/Sub for our internal event streaming pipeline?", "label": 0}
+{"id": "gen_neg_003", "text": "Write a blog post about our engineering team's journey to microservices.", "label": 0}
+{"id": "gen_neg_004", "text": "Write a BigQuery SQL query to calculate weekly active users.", "label": 0}
+{"id": "gen_neg_005", "text": "Extract all action items from this sprint planning meeting transcript.", "label": 0}
+{"id": "gen_neg_006", "text": "Fix the race condition in this concurrent Go service.", "label": 0}
+{"id": "gen_neg_007", "text": "Analyze the long-term risks of our current vendor dependency situation.", "label": 0}
+{"id": "gen_neg_008", "text": "Write a fun team motto for our new reliability engineering group.", "label": 0}
+{"id": "gen_neg_009", "text": "Write a pandas script to detect anomalies in our API latency data.", "label": 0}
+{"id": "gen_neg_010", "text": "Summarize the key findings from this system performance report.", "label": 0}
+{"id": "gen_neg_011", "text": "Implement retry logic with exponential backoff in this Python API client.", "label": 0}
+{"id": "gen_neg_012", "text": "Evaluate whether we should adopt a monorepo structure for our services.", "label": 0}
+{"id": "gen_neg_013", "text": "Draft a compelling job description for a platform infrastructure engineer.", "label": 0}
+{"id": "gen_neg_014", "text": "Write a SQL window function to calculate cumulative daily signups.", "label": 0}
+{"id": "gen_neg_015", "text": "What are the open risks identified in this migration proposal document?", "label": 0}
+{"id": "gen_neg_016", "text": "Write a Kubernetes deployment YAML for our backend API service.", "label": 0}
+{"id": "gen_neg_017", "text": "Should we use optimistic locking or pessimistic locking for this write operation?", "label": 0}
+{"id": "gen_neg_018", "text": "Write an engaging introduction for our internal engineering handbook.", "label": 0}
+{"id": "gen_neg_019", "text": "How do I handle schema drift in our Avro-based data pipeline?", "label": 0}
+{"id": "gen_neg_020", "text": "Summarize the alternatives considered in this architecture decision record.", "label": 0}
+{"id": "gen_neg_021", "text": "Debug why this TypeScript interface is causing a compile-time error.", "label": 0}
+{"id": "gen_neg_022", "text": "Compare the operational complexity of managing our own Kafka versus using Pub/Sub.", "label": 0}
+{"id": "gen_neg_023", "text": "Write creative copy for the landing page of our developer portal.", "label": 0}
+{"id": "gen_neg_024", "text": "Write a dbt test to validate referential integrity between these two tables.", "label": 0}
+{"id": "gen_neg_025", "text": "What are the steps listed in this incident response runbook?", "label": 0}

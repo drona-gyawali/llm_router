@@ -1,0 +1,50 @@
+{"id": "doc_pos_001", "text": "Give me a summary of this incident postmortem document.", "label": 1}
+{"id": "doc_pos_002", "text": "What are the key decisions recorded in this architecture review?", "label": 1}
+{"id": "doc_pos_003", "text": "Extract all open action items from this project status report.", "label": 1}
+{"id": "doc_pos_004", "text": "Summarize what this RFC proposes in two sentences.", "label": 1}
+{"id": "doc_pos_005", "text": "What does this vendor contract say about uptime guarantees?", "label": 1}
+{"id": "doc_pos_006", "text": "List all the breaking changes mentioned in this migration guide.", "label": 1}
+{"id": "doc_pos_007", "text": "What are the success criteria defined in this OKR document?", "label": 1}
+{"id": "doc_pos_008", "text": "Summarize the root cause from this production outage report.", "label": 1}
+{"id": "doc_pos_009", "text": "Extract the deployment steps from this runbook.", "label": 1}
+{"id": "doc_pos_010", "text": "What are the unresolved risks listed in this project proposal?", "label": 1}
+{"id": "doc_pos_011", "text": "Give me a TL;DR of this 30-page system design document.", "label": 1}
+{"id": "doc_pos_012", "text": "What approvals are needed according to this governance policy document?", "label": 1}
+{"id": "doc_pos_013", "text": "Summarize the feedback themes from this user research transcript.", "label": 1}
+{"id": "doc_pos_014", "text": "Extract all the configuration parameters documented in this technical spec.", "label": 1}
+{"id": "doc_pos_015", "text": "What are the next steps outlined in this quarterly review document?", "label": 1}
+{"id": "doc_pos_016", "text": "Summarize the differences between version 1 and version 2 of this API spec.", "label": 1}
+{"id": "doc_pos_017", "text": "What are the main arguments presented in this engineering proposal?", "label": 1}
+{"id": "doc_pos_018", "text": "Pull out every functional requirement listed in this product specification document.", "label": 1}
+{"id": "doc_pos_019", "text": "Give me a bullet point summary of this sprint retrospective.", "label": 1}
+{"id": "doc_pos_020", "text": "What does this data policy say about how long we retain user events?", "label": 1}
+{"id": "doc_pos_021", "text": "Summarize the test results and conclusions from this QA report.", "label": 1}
+{"id": "doc_pos_022", "text": "Extract the key metrics and targets mentioned in this strategy document.", "label": 1}
+{"id": "doc_pos_023", "text": "What prerequisites are listed in this engineer onboarding document?", "label": 1}
+{"id": "doc_pos_024", "text": "Summarize this long email thread about the planned database migration.", "label": 1}
+{"id": "doc_pos_025", "text": "List all the open questions that remain unresolved in this design doc.", "label": 1}
+{"id": "doc_neg_001", "text": "Implement a binary search algorithm in Python.", "label": 0}
+{"id": "doc_neg_002", "text": "What are the tradeoffs between Kafka and Google Pub/Sub?", "label": 0}
+{"id": "doc_neg_003", "text": "Write a tagline for our new API management platform.", "label": 0}
+{"id": "doc_neg_004", "text": "Write a BigQuery query to identify churned users in the last 30 days.", "label": 0}
+{"id": "doc_neg_005", "text": "What does a load balancer do?", "label": 0}
+{"id": "doc_neg_006", "text": "Write a dbt model to calculate weekly active users from event logs.", "label": 0}
+{"id": "doc_neg_007", "text": "Should we use optimistic or pessimistic locking for this update?", "label": 0}
+{"id": "doc_neg_008", "text": "Fix the null pointer exception in this Java service.", "label": 0}
+{"id": "doc_neg_009", "text": "Write a compelling job description for a senior data engineer.", "label": 0}
+{"id": "doc_neg_010", "text": "What is the difference between horizontal and vertical scaling?", "label": 0}
+{"id": "doc_neg_011", "text": "Write a Python script to clean and normalize this CSV dataset.", "label": 0}
+{"id": "doc_neg_012", "text": "Analyze whether our monolith should be broken into microservices now.", "label": 0}
+{"id": "doc_neg_013", "text": "Write an engaging README for our new open source repository.", "label": 0}
+{"id": "doc_neg_014", "text": "How do I calculate statistical significance for our A/B test results?", "label": 0}
+{"id": "doc_neg_015", "text": "What is the difference between a mutex and a semaphore?", "label": 0}
+{"id": "doc_neg_016", "text": "Write a GitHub Actions pipeline for running tests on every pull request.", "label": 0}
+{"id": "doc_neg_017", "text": "Evaluate the security risks of our current API key management approach.", "label": 0}
+{"id": "doc_neg_018", "text": "Write a fun icebreaker activity for our engineering team offsite.", "label": 0}
+{"id": "doc_neg_019", "text": "Write a SQL query to calculate average session duration per user.", "label": 0}
+{"id": "doc_neg_020", "text": "What does idempotency mean in distributed systems?", "label": 0}
+{"id": "doc_neg_021", "text": "Implement OAuth2 authentication flow in this Express application.", "label": 0}
+{"id": "doc_neg_022", "text": "Compare the costs of Cloud Run versus Kubernetes for our workload.", "label": 0}
+{"id": "doc_neg_023", "text": "Write a creative pitch for our internal developer productivity tool.", "label": 0}
+{"id": "doc_neg_024", "text": "Write a pandas script to calculate rolling 7-day user retention.", "label": 0}
+{"id": "doc_neg_025", "text": "What is eventual consistency and when should we accept it?", "label": 0}

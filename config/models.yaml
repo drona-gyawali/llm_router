@@ -1,0 +1,199 @@
+################################################################################
+# LLM Router — Master Configuration
+#
+# Three sections:
+#   models:  defines every available upstream model + how to talk to it
+#   routing: defines all routing rules (rule-based + semantic category mapping)
+#
+# To add a new provider/model:  add an entry under `models` with its api_schema
+# To change routing logic:      edit `routing` only
+# Zero Python changes needed for either.
+#
+# api_schema fields
+# ─────────────────
+# endpoint_path:              URL path appended to base_url. Supports {{model_id}}
+# auth_header:                Header name for API key. null = use auth_query_param
+# auth_scheme:                Prefix before key e.g. "Bearer". null = key directly
+# auth_query_param:           Query param name for API key (Google-style). null = use header
+# extra_headers:              Static headers always sent (e.g. anthropic-version)
+#
+# body_template:              Keys to include in request body.
+#                             Values starting with {{ }} are replaced at runtime:
+#                               {{model_id}}     → ModelConfig.model_id
+#                               {{messages}}     → formatted message list
+#                               {{max_tokens}}   → request max_tokens
+#                               {{temperature}}  → request temperature
+#                               {{stream}}       → request stream bool
+#                               {{system}}       → system prompt (if any)
+#                             Nested dicts are supported (see Google generationConfig)
+#                             Keys with null value are omitted when value is None
+#
+# messages_key:               Key name for messages array in body (messages/contents)
+# messages_wrapper:           Optional wrapper per message e.g. parts:[{text:...}]
+#                               "none"  = {role, content}
+#                               "parts" = {role, parts:[{text: content}]}
+#
+# role_map:                   Maps internal roles to provider roles
+#                               system role handling:
+#                               "inline"  = system goes in messages array
+#                               "field"   = system goes in body_template.{{system}}
+#                               "prefix"  = system prepended to first user message
+#
+# system_handling:            How system prompt is handled: inline | field | prefix
+#
+# response_text_path:         Dot-notation path to extract text from response JSON
+# response_model_path:        Path to model name in response
+# response_input_tokens_path: Path to input token count
+# response_output_tokens_path:Path to output token count
+#
+# stream_event_prefix:        SSE line prefix to strip before JSON parsing
+# stream_done_signal:         SSE termination string. null = stream until closed
+# stream_text_path:           Dot-notation path to text chunk in each SSE event
+# stream_type_field:          Field to check for event type filtering. null = no filter
+# stream_type_value:          Required value of stream_type_field to yield chunk
+################################################################################
+################################################################################
+# LLM Router — Master Configuration
+################################################################################
+
+models:
+
+  # ── Groq ──────────────────────────────────────────
+
+  - name: "gpt-oss-120b"
+    provider: "groq"
+    model_id: "openai/gpt-oss-120b"
+    base_url: "https://api.groq.com/openai/v1"
+    api_key_env_var: "GROQ_API_KEY"
+
+    api_schema:
+      endpoint_path: "/chat/completions"
+      auth_header: "Authorization"
+      auth_scheme: "Bearer"
+      auth_query_param: null
+      extra_headers: {}
+
+      body_template:
+        model: "{{model_id}}"
+        messages: "{{messages}}"
+        max_tokens: "{{max_tokens}}"
+        temperature: "{{temperature}}"
+        stream: "{{stream}}"
+
+      messages_key: "messages"
+      messages_wrapper: "none"
+      system_handling: "inline"
+
+      role_map:
+        user: "user"
+        assistant: "assistant"
+        system: "system"
+
+      response_text_path: "choices.0.message.content"
+      response_model_path: "model"
+      response_input_tokens_path: "usage.prompt_tokens"
+      response_output_tokens_path: "usage.completion_tokens"
+
+      stream_event_prefix: "data: "
+      stream_done_signal: "[DONE]"
+      stream_text_path: "choices.0.delta.content"
+      stream_type_field: null
+      stream_type_value: null
+
+    capabilities:
+      max_context_tokens: 131072
+      supports_streaming: true
+      supports_json_mode: true
+      supports_tool_calling: true
+
+    pricing:
+      input_cost_per_1k_tokens: 0.0
+      output_cost_per_1k_tokens: 0.0
+
+    resilience:
+      timeout_seconds: 15.0
+      fallback_model: "gemini-2.5-flash"
+
+  # ── Google Gemini ─────────────────────────────
+
+  - name: "gemini-2.5-flash"
+    provider: "google"
+    model_id: "gemini-2.5-flash"
+    base_url: "https://generativelanguage.googleapis.com/v1beta"
+    api_key_env_var: "GOOGLE_API_KEY"
+
+    api_schema:
+      endpoint_path: "/models/{{model_id}}:generateContent"
+      auth_header: null
+      auth_scheme: null
+      auth_query_param: "key"
+
+      extra_headers: {}
+
+      body_template:
+        contents: "{{messages}}"
+        generationConfig:
+          maxOutputTokens: "{{max_tokens}}"
+          temperature: "{{temperature}}"
+
+      messages_key: "contents"
+      messages_wrapper: "parts"
+      system_handling: "prefix"
+
+      role_map:
+        user: "user"
+        assistant: "model"
+        system: "user"
+
+      response_text_path: "candidates.0.content.parts.0.text"
+      response_model_path: "modelVersion"
+      response_input_tokens_path: "usageMetadata.promptTokenCount"
+      response_output_tokens_path: "usageMetadata.candidatesTokenCount"
+
+      stream_event_prefix: "data: "
+      stream_done_signal: null
+      stream_text_path: "candidates.0.content.parts.0.text"
+      stream_type_field: null
+      stream_type_value: null
+
+    capabilities:
+      max_context_tokens: 1000000
+      supports_streaming: true
+      supports_json_mode: true
+      supports_tool_calling: true
+
+    pricing:
+      input_cost_per_1k_tokens: 0.0
+      output_cost_per_1k_tokens: 0.0
+
+    resilience:
+      timeout_seconds: 15.0
+      fallback_model: "gpt-oss-120b"
+
+
+# ── Routing Configuration ─────────────────────────────────────────────────────
+
+routing:
+
+  rules:
+    long_context:
+      token_threshold: 8000
+      model: "gemini-2.5-flash"
+    code:
+      model: "gpt-oss-120b"
+    enterprise:
+      model: "gpt-oss-120b"
+    over_budget:
+      model: "gemini-2.5-flash"
+    default:
+      model: "gpt-oss-120b"
+
+  categories:
+    coding:    "gpt-oss-120b"
+    reasoning: "gpt-oss-120b"
+    creative:  "gpt-oss-120b"
+    document:  "gemini-2.5-flash"
+    data:      "gpt-oss-120b"
+    general:   "gemini-2.5-flash"
+
+  semantic_fallback: "gpt-oss-120b"

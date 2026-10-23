@@ -1,0 +1,50 @@
+{"id": "cre_pos_001", "text": "Write a catchy headline for our new developer dashboard product.", "label": 1}
+{"id": "cre_pos_002", "text": "Draft a welcome email for engineers joining our platform team.", "label": 1}
+{"id": "cre_pos_003", "text": "Suggest five creative names for our new internal search tool.", "label": 1}
+{"id": "cre_pos_004", "text": "Write a fun description of our team for the company all-hands.", "label": 1}
+{"id": "cre_pos_005", "text": "Create an inspiring vision statement for our infrastructure platform.", "label": 1}
+{"id": "cre_pos_006", "text": "Write a blog post about how we reduced our API latency by 50%.", "label": 1}
+{"id": "cre_pos_007", "text": "Draft a Slack announcement for our new internal tool launch.", "label": 1}
+{"id": "cre_pos_008", "text": "Write a compelling description of our engineering culture for recruitment.", "label": 1}
+{"id": "cre_pos_009", "text": "Come up with a memorable motto for our platform reliability team.", "label": 1}
+{"id": "cre_pos_010", "text": "Write an engaging introduction for our new developer documentation.", "label": 1}
+{"id": "cre_pos_011", "text": "Draft a creative pitch for our internal tool to present to the VP.", "label": 1}
+{"id": "cre_pos_012", "text": "Write a short story explaining our microservices architecture to newcomers.", "label": 1}
+{"id": "cre_pos_013", "text": "Create a fun onboarding quiz description for new engineers joining the team.", "label": 1}
+{"id": "cre_pos_014", "text": "Write copy for the loading screen of our internal developer portal.", "label": 1}
+{"id": "cre_pos_015", "text": "Draft a heartfelt message celebrating our team's one year anniversary.", "label": 1}
+{"id": "cre_pos_016", "text": "Explain our container orchestration system to a non-technical product manager using a simple metaphor.", "label": 1}
+{"id": "cre_pos_017", "text": "Create a fun error message for when our API quota is exceeded.", "label": 1}
+{"id": "cre_pos_018", "text": "Write an abstract for our research paper on distributed systems.", "label": 1}
+{"id": "cre_pos_019", "text": "Draft a persuasive internal proposal to adopt a new observability tool.", "label": 1}
+{"id": "cre_pos_020", "text": "Write a creative team name and motto for our new reliability project.", "label": 1}
+{"id": "cre_pos_021", "text": "Create social media copy for our open source project announcement.", "label": 1}
+{"id": "cre_pos_022", "text": "Write engaging release notes for our latest platform update.", "label": 1}
+{"id": "cre_pos_023", "text": "Draft a job description for a senior infrastructure engineer role.", "label": 1}
+{"id": "cre_pos_024", "text": "Write a short video script for our internal tool demo.", "label": 1}
+{"id": "cre_pos_025", "text": "Create a memorable closing statement for our engineering all-hands presentation.", "label": 1}
+{"id": "cre_neg_001", "text": "Write a Python function to parse nested JSON efficiently.", "label": 0}
+{"id": "cre_neg_002", "text": "What are the tradeoffs between REST and gRPC for internal services?", "label": 0}
+{"id": "cre_neg_003", "text": "Summarize the key decisions in this architecture review document.", "label": 0}
+{"id": "cre_neg_004", "text": "Write a BigQuery SQL query to calculate user retention by cohort.", "label": 0}
+{"id": "cre_neg_005", "text": "What does eventual consistency mean?", "label": 0}
+{"id": "cre_neg_006", "text": "Fix the race condition in this concurrent Python code.", "label": 0}
+{"id": "cre_neg_007", "text": "Extract all action items from this project planning document.", "label": 0}
+{"id": "cre_neg_008", "text": "Should we use a monorepo or separate repos for our services?", "label": 0}
+{"id": "cre_neg_009", "text": "Write a pandas script to detect and remove outliers from this dataset.", "label": 0}
+{"id": "cre_neg_010", "text": "What is a deadlock and how do we prevent it?", "label": 0}
+{"id": "cre_neg_011", "text": "Debug why this Kubernetes pod keeps restarting.", "label": 0}
+{"id": "cre_neg_012", "text": "Analyze the scalability bottlenecks in our current database design.", "label": 0}
+{"id": "cre_neg_013", "text": "Give me a TL;DR of this 40-page system design specification.", "label": 0}
+{"id": "cre_neg_014", "text": "How do I implement exponential backoff for API retries in Go?", "label": 0}
+{"id": "cre_neg_015", "text": "What is the difference between a primary key and a unique constraint?", "label": 0}
+{"id": "cre_neg_016", "text": "Write a dbt model for calculating weekly active users.", "label": 0}
+{"id": "cre_neg_017", "text": "What are the security risks of storing secrets in environment variables?", "label": 0}
+{"id": "cre_neg_018", "text": "List all breaking changes from this API migration guide.", "label": 0}
+{"id": "cre_neg_019", "text": "Why is my streaming pipeline accumulating lag during peak hours?", "label": 0}
+{"id": "cre_neg_020", "text": "What does distributed tracing help us understand?", "label": 0}
+{"id": "cre_neg_021", "text": "Implement a token bucket rate limiter in Python.", "label": 0}
+{"id": "cre_neg_022", "text": "Compare PostgreSQL and BigQuery for storing audit logs.", "label": 0}
+{"id": "cre_neg_023", "text": "Summarize the root cause from this production incident report.", "label": 0}
+{"id": "cre_neg_024", "text": "How do I efficiently load 50GB of data into BigQuery?", "label": 0}
+{"id": "cre_neg_025", "text": "What is the difference between synchronous and asynchronous processing?", "label": 0}

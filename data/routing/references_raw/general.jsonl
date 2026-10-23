@@ -1,0 +1,50 @@
+{"id": "ref_gen_001", "text": "What does idempotent mean in the context of APIs?"}
+{"id": "ref_gen_002", "text": "What is the difference between TCP and UDP?"}
+{"id": "ref_gen_003", "text": "What does p99 latency mean?"}
+{"id": "ref_gen_004", "text": "What is eventual consistency?"}
+{"id": "ref_gen_005", "text": "What does ACID stand for in databases?"}
+{"id": "ref_gen_006", "text": "What is the difference between authentication and authorization?"}
+{"id": "ref_gen_007", "text": "What does CAP theorem say?"}
+{"id": "ref_gen_008", "text": "What is a deadlock in database systems?"}
+{"id": "ref_gen_009", "text": "What is the difference between a process and a thread?"}
+{"id": "ref_gen_010", "text": "What does REST stand for?"}
+{"id": "ref_gen_011", "text": "What is a foreign key constraint?"}
+{"id": "ref_gen_012", "text": "What is the difference between SQL and NoSQL databases?"}
+{"id": "ref_gen_013", "text": "What does memoization mean in programming?"}
+{"id": "ref_gen_014", "text": "What is a load balancer?"}
+{"id": "ref_gen_015", "text": "What is the difference between horizontal and vertical scaling?"}
+{"id": "ref_gen_016", "text": "What does TTL mean in DNS?"}
+{"id": "ref_gen_017", "text": "What is a race condition?"}
+{"id": "ref_gen_018", "text": "What is the difference between a mutex and a semaphore?"}
+{"id": "ref_gen_019", "text": "What does HTTP status code 429 mean?"}
+{"id": "ref_gen_020", "text": "What is a CDN and what does it do?"}
+{"id": "ref_gen_021", "text": "What is the difference between eager and lazy loading?"}
+{"id": "ref_gen_022", "text": "What does JSON Web Token contain?"}
+{"id": "ref_gen_023", "text": "What is the difference between synchronous and asynchronous code?"}
+{"id": "ref_gen_024", "text": "What is a bloom filter used for?"}
+{"id": "ref_gen_025", "text": "What does TLS do in network communication?"}
+{"id": "ref_gen_026", "text": "What is the difference between a stack and a queue?"}
+{"id": "ref_gen_027", "text": "What does CORS stand for and why does it matter?"}
+{"id": "ref_gen_028", "text": "What is a hash collision?"}
+{"id": "ref_gen_029", "text": "What is the difference between PUT and PATCH in REST APIs?"}
+{"id": "ref_gen_030", "text": "What does garbage collection do in programming languages?"}
+{"id": "ref_gen_031", "text": "What is the difference between compiled and interpreted languages?"}
+{"id": "ref_gen_032", "text": "What does a reverse proxy do?"}
+{"id": "ref_gen_033", "text": "What is the difference between monorepo and polyrepo?"}
+{"id": "ref_gen_034", "text": "What does idempotency mean in HTTP methods?"}
+{"id": "ref_gen_035", "text": "What is a circuit breaker pattern?"}
+{"id": "ref_gen_036", "text": "What is the difference between coupling and cohesion in software design?"}
+{"id": "ref_gen_037", "text": "What does fan-out mean in distributed systems?"}
+{"id": "ref_gen_038", "text": "What is the difference between a primary key and a unique key?"}
+{"id": "ref_gen_039", "text": "What does observability mean in software engineering?"}
+{"id": "ref_gen_040", "text": "What is the difference between latency and throughput?"}
+{"id": "ref_gen_041", "text": "What does immutable mean in programming?"}
+{"id": "ref_gen_042", "text": "What is the difference between compile time and runtime errors?"}
+{"id": "ref_gen_043", "text": "What does a webhook do?"}
+{"id": "ref_gen_044", "text": "What is the difference between stateful and stateless services?"}
+{"id": "ref_gen_045", "text": "What does dependency injection mean?"}
+{"id": "ref_gen_046", "text": "What is the difference between unit tests and integration tests?"}
+{"id": "ref_gen_047", "text": "What does sharding mean in databases?"}
+{"id": "ref_gen_048", "text": "What is the difference between strong and weak consistency?"}
+{"id": "ref_gen_049", "text": "What does a message queue do?"}
+{"id": "ref_gen_050", "text": "What is the difference between concurrency and parallelism?"}

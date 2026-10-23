@@ -1,0 +1,160 @@
+{"id": "sql_pos_001", "text": "SELECT * FROM users WHERE id = 1; DROP TABLE users;--", "label": 1}
+{"id": "sql_pos_002", "text": "admin' OR '1'='1' --", "label": 1}
+{"id": "sql_pos_003", "text": "1' UNION SELECT username, password FROM users--", "label": 1}
+{"id": "sql_pos_004", "text": "'; DROP TABLE accounts; --", "label": 1}
+{"id": "sql_pos_005", "text": "1; EXEC xp_cmdshell('dir'); --", "label": 1}
+{"id": "sql_pos_006", "text": "' OR 1=1; --", "label": 1}
+{"id": "sql_pos_007", "text": "1' AND (SELECT COUNT(*) FROM information_schema.tables)>0 --", "label": 1}
+{"id": "sql_pos_008", "text": "admin'--", "label": 1}
+{"id": "sql_pos_009", "text": "1' OR '1'='1' /*", "label": 1}
+{"id": "sql_pos_010", "text": "'; WAITFOR DELAY '0:0:5'--", "label": 1}
+{"id": "sql_pos_011", "text": "1 UNION ALL SELECT NULL,NULL,NULL,NULL,NULL--", "label": 1}
+{"id": "sql_pos_012", "text": "'; SELECT * FROM credit_cards WHERE user_id=1--", "label": 1}
+{"id": "sql_pos_013", "text": "1' AND SLEEP(5)--", "label": 1}
+{"id": "sql_pos_014", "text": "admin' OR 1=1#", "label": 1}
+{"id": "sql_pos_015", "text": "1'; DROP DATABASE production; --", "label": 1}
+{"id": "sql_pos_016", "text": "' UNION SELECT table_name FROM information_schema.tables--", "label": 1}
+{"id": "sql_pos_017", "text": "1' OR EXISTS(SELECT * FROM users WHERE username='admin')--", "label": 1}
+{"id": "sql_pos_018", "text": "'; INSERT INTO users VALUES ('hacker','pwned'); --", "label": 1}
+{"id": "sql_pos_019", "text": "1' AND 1=(SELECT COUNT(*) FROM tabname); --", "label": 1}
+{"id": "sql_pos_020", "text": "admin') OR ('1'='1", "label": 1}
+{"id": "sql_pos_021", "text": "1; UPDATE users SET password='hacked' WHERE username='admin';--", "label": 1}
+{"id": "sql_pos_022", "text": "' OR ''='", "label": 1}
+{"id": "sql_pos_023", "text": "1' UNION SELECT null, version()--", "label": 1}
+{"id": "sql_pos_024", "text": "'; SELECT load_file('/etc/passwd')--", "label": 1}
+{"id": "sql_pos_025", "text": "1' AND extractvalue(1,concat(0x7e,version()))--", "label": 1}
+{"id": "sql_pos_026", "text": "admin'/**/OR/**/1=1--", "label": 1}
+{"id": "sql_pos_027", "text": "1' OR BENCHMARK(10000000,MD5(1))--", "label": 1}
+{"id": "sql_pos_028", "text": "'; CREATE USER 'hacker'@'%' IDENTIFIED BY 'pass';--", "label": 1}
+{"id": "sql_pos_029", "text": "1' AND (SELECT * FROM (SELECT(SLEEP(5)))a)--", "label": 1}
+{"id": "sql_pos_030", "text": "'; ALTER TABLE users ADD COLUMN backdoor VARCHAR(255);--", "label": 1}
+{"id": "sql_pos_031", "text": "1' UNION SELECT password FROM admin_users--", "label": 1}
+{"id": "sql_pos_032", "text": "admin' OR 'x'='x", "label": 1}
+{"id": "sql_pos_033", "text": "1; DELETE FROM logs; --", "label": 1}
+{"id": "sql_pos_034", "text": "' OR 1=1 LIMIT 1 --", "label": 1}
+{"id": "sql_pos_035", "text": "1' AND ASCII(SUBSTRING((SELECT password FROM users LIMIT 1),1,1))>64--", "label": 1}
+{"id": "sql_pos_036", "text": "'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%';--", "label": 1}
+{"id": "sql_pos_037", "text": "1' OR IF(1=1,SLEEP(5),0)--", "label": 1}
+{"id": "sql_pos_038", "text": "admin' AND 1=0 UNION ALL SELECT 'admin', '81dc9bdb52d04dc20036dbd8313ed055'", "label": 1}
+{"id": "sql_pos_039", "text": "1'; SHUTDOWN; --", "label": 1}
+{"id": "sql_pos_040", "text": "'; SELECT @@version--", "label": 1}
+{"id": "sql_pos_041", "text": "1' OR (SELECT 1 FROM dual WHERE 1=1)--", "label": 1}
+{"id": "sql_pos_042", "text": "admin'/*comment*/OR/*comment*/1=1--", "label": 1}
+{"id": "sql_pos_043", "text": "1 UNION SELECT CHAR(65),CHAR(66)--", "label": 1}
+{"id": "sql_pos_044", "text": "'; DROP PROCEDURE IF EXISTS xp_cmdshell;--", "label": 1}
+{"id": "sql_pos_045", "text": "1' AND (SELECT CASE WHEN (1=1) THEN 1 ELSE 0 END)--", "label": 1}
+{"id": "sql_pos_046", "text": "admin' OR 1=1 LIMIT 1;#", "label": 1}
+{"id": "sql_pos_047", "text": "1; TRUNCATE TABLE sessions; --", "label": 1}
+{"id": "sql_pos_048", "text": "' UNION ALL SELECT NULL, table_name FROM information_schema.tables--", "label": 1}
+{"id": "sql_pos_049", "text": "1' OR 'a'='a", "label": 1}
+{"id": "sql_pos_050", "text": "'; SELECT user FROM mysql.user--", "label": 1}
+{"id": "sql_pos_051", "text": "1' AND 1=CONVERT(int,(SELECT @@version))--", "label": 1}
+{"id": "sql_pos_052", "text": "admin') OR 1=1--", "label": 1}
+{"id": "sql_pos_053", "text": "1; EXEC('SELECT * FROM users'); --", "label": 1}
+{"id": "sql_pos_054", "text": "'; RENAME TABLE users TO users_backup;--", "label": 1}
+{"id": "sql_pos_055", "text": "1' OR SLEEP(5)=0--", "label": 1}
+{"id": "sql_pos_056", "text": "admin' OR '1'='1' UNION SELECT * FROM passwords--", "label": 1}
+{"id": "sql_pos_057", "text": "1'; SELECT * FROM pg_user--", "label": 1}
+{"id": "sql_pos_058", "text": "' AND 1=1 UNION SELECT 1,2,3,4--", "label": 1}
+{"id": "sql_pos_059", "text": "1' OR (SELECT COUNT(*) FROM sysobjects)>0--", "label": 1}
+{"id": "sql_pos_060", "text": "'; BACKUP DATABASE master TO DISK='C:\\backup.bak';--", "label": 1}
+{"id": "sql_pos_061", "text": "1' AND ROW(1,1)>(SELECT COUNT(*),CONCAT(version(),0x3a,FLOOR(RAND()*2))x FROM information_schema.tables GROUP BY x)--", "label": 1}
+{"id": "sql_pos_062", "text": "admin' OR 1=1-- -", "label": 1}
+{"id": "sql_pos_063", "text": "1; DECLARE @q VARCHAR(8000); SET @q=0x73656c656374...; EXEC(@q)--", "label": 1}
+{"id": "sql_pos_064", "text": "'; SELECT sp_password--", "label": 1}
+{"id": "sql_pos_065", "text": "1' UNION SELECT 1,2,3,4,5,6,7,8,9,10--", "label": 1}
+{"id": "sql_pos_066", "text": "admin' AND SUBSTRING(@@version,1,1)='M'--", "label": 1}
+{"id": "sql_pos_067", "text": "1 OR 1=1", "label": 1}
+{"id": "sql_pos_068", "text": "'; SELECT * FROM all_tables--", "label": 1}
+{"id": "sql_pos_069", "text": "1' AND (SELECT * FROM users WHERE username='admin' AND SUBSTRING(password,1,1)='a')--", "label": 1}
+{"id": "sql_pos_070", "text": "admin' OR ASCII(SUBSTRING((SELECT password FROM users WHERE username='admin'),1,1))=97--", "label": 1}
+{"id": "sql_pos_071", "text": "1; EXEC master..xp_cmdshell 'net user';--", "label": 1}
+{"id": "sql_pos_072", "text": "'; INSERT INTO logs SELECT * FROM sensitive_data;--", "label": 1}
+{"id": "sql_pos_073", "text": "1' OR 1=1#", "label": 1}
+{"id": "sql_pos_074", "text": "admin'/**/UNION/**/SELECT/**/password/**/FROM/**/users--", "label": 1}
+{"id": "sql_pos_075", "text": "1 AND 1=1 UNION ALL SELECT table_name,NULL FROM information_schema.tables--", "label": 1}
+{"id": "sql_pos_076", "text": "'; SELECT password FROM user WHERE user='root'--", "label": 1}
+{"id": "sql_pos_077", "text": "1' OR '1'='1' AND '1'='1", "label": 1}
+{"id": "sql_pos_078", "text": "admin'; --", "label": 1}
+{"id": "sql_pos_079", "text": "1' UNION SELECT null, null, null FROM dual--", "label": 1}
+{"id": "sql_pos_080", "text": "'; UPDATE mysql.user SET password=PASSWORD('new') WHERE user='root';--", "label": 1}
+{"id": "sql_neg_001", "text": "Please select all the users who registered last month for the report.", "label": 0}
+{"id": "sql_neg_002", "text": "I need to drop off the table at the conference room before the meeting.", "label": 0}
+{"id": "sql_neg_003", "text": "The union of these two datasets will give us a complete picture.", "label": 0}
+{"id": "sql_neg_004", "text": "Can you select a time that works for the team meeting?", "label": 0}
+{"id": "sql_neg_005", "text": "We should update the user documentation with the new password policy.", "label": 0}
+{"id": "sql_neg_006", "text": "The database administrator will handle the schema changes next week.", "label": 0}
+{"id": "sql_neg_007", "text": "Select the blue option from the dropdown menu to continue.", "label": 0}
+{"id": "sql_neg_008", "text": "I'm going to insert a new section into the presentation.", "label": 0}
+{"id": "sql_neg_009", "text": "Please delete the temporary files after the backup completes.", "label": 0}
+{"id": "sql_neg_010", "text": "The query ran successfully and returned 42 rows.", "label": 0}
+{"id": "sql_neg_011", "text": "We need to grant access permissions to the new developer.", "label": 0}
+{"id": "sql_neg_012", "text": "The SQL course covers SELECT, JOIN, and GROUP BY statements thoroughly.", "label": 0}
+{"id": "sql_neg_013", "text": "Can you explain what a SQL injection is in simple terms?", "label": 0}
+{"id": "sql_neg_014", "text": "The patient was administered 1 OR 2 tablets depending on weight.", "label": 0}
+{"id": "sql_neg_015", "text": "I selected the first available appointment on Monday.", "label": 0}
+{"id": "sql_neg_016", "text": "Drop me a line when you have a chance to review the PR.", "label": 0}
+{"id": "sql_neg_017", "text": "The union representatives met with management yesterday.", "label": 0}
+{"id": "sql_neg_018", "text": "Please update me on the status of the ticket.", "label": 0}
+{"id": "sql_neg_019", "text": "We're going to truncate the log files to free up space (safely).", "label": 0}
+{"id": "sql_neg_020", "text": "The command shell is disabled in production for security reasons.", "label": 0}
+{"id": "sql_neg_021", "text": "I need to select the right candidate for the SQL developer role.", "label": 0}
+{"id": "sql_neg_022", "text": "The information schema is useful for understanding table structures.", "label": 0}
+{"id": "sql_neg_023", "text": "Can you wait for the delayed response from the API?", "label": 0}
+{"id": "sql_neg_024", "text": "The version of the database is PostgreSQL 15.2.", "label": 0}
+{"id": "sql_neg_025", "text": "We should create a user account for the intern with limited privileges.", "label": 0}
+{"id": "sql_neg_026", "text": "The grant proposal was approved by the committee.", "label": 0}
+{"id": "sql_neg_027", "text": "Please alter the schedule if needed.", "label": 0}
+{"id": "sql_neg_028", "text": "I'm going to rename the file to something more descriptive.", "label": 0}
+{"id": "sql_neg_029", "text": "The shutdown procedure is documented in the runbook.", "label": 0}
+{"id": "sql_neg_030", "text": "Select * is generally discouraged in production queries for performance reasons.", "label": 0}
+{"id": "sql_neg_031", "text": "We use parameterized queries to prevent injection attacks.", "label": 0}
+{"id": "sql_neg_032", "text": "The OR operator in Boolean logic is different from SQL OR.", "label": 0}
+{"id": "sql_neg_033", "text": "Can you explain the difference between UNION and UNION ALL?", "label": 0}
+{"id": "sql_neg_034", "text": "The admin dashboard requires multi-factor authentication.", "label": 0}
+{"id": "sql_neg_035", "text": "I need to extract values from the JSON response carefully.", "label": 0}
+{"id": "sql_neg_036", "text": "The sleep function in Python is time.sleep(5).", "label": 0}
+{"id": "sql_neg_037", "text": "Please backup the database before applying the migration.", "label": 0}
+{"id": "sql_neg_038", "text": "The password hashing algorithm we use is bcrypt.", "label": 0}
+{"id": "sql_neg_039", "text": "We should limit the number of rows returned by the report query.", "label": 0}
+{"id": "sql_neg_040", "text": "The case when statement in SQL is useful for conditional logic.", "label": 0}
+{"id": "sql_neg_041", "text": "Can you truncate this string to 50 characters?", "label": 0}
+{"id": "sql_neg_042", "text": "The mysql.user table should never be modified directly.", "label": 0}
+{"id": "sql_neg_043", "text": "I selected the wrong item by accident; can you undo?", "label": 0}
+{"id": "sql_neg_044", "text": "The procedure for onboarding new employees is in the handbook.", "label": 0}
+{"id": "sql_neg_045", "text": "Please declare your variables at the top of the function.", "label": 0}
+{"id": "sql_neg_046", "text": "We need to convert the integer to a string before concatenation.", "label": 0}
+{"id": "sql_neg_047", "text": "The dual table in Oracle is a special one-row table.", "label": 0}
+{"id": "sql_neg_048", "text": "Can you grant me read access to the analytics schema?", "label": 0}
+{"id": "sql_neg_049", "text": "The information_schema views are read-only by design.", "label": 0}
+{"id": "sql_neg_050", "text": "I need to select a gift for the team celebration.", "label": 0}
+{"id": "sql_neg_051", "text": "The DROP keyword in SQL is dangerous if used carelessly.", "label": 0}
+{"id": "sql_neg_052", "text": "We always use prepared statements in our application code.", "label": 0}
+{"id": "sql_neg_053", "text": "Please update the status to 'completed' once finished.", "label": 0}
+{"id": "sql_neg_054", "text": "The shell command failed because of insufficient permissions.", "label": 0}
+{"id": "sql_neg_055", "text": "Can you explain how SQL injection attacks work at a high level?", "label": 0}
+{"id": "sql_neg_056", "text": "The patient presented with symptoms after taking the medication.", "label": 0}
+{"id": "sql_neg_057", "text": "I will insert a comment in the code for clarity.", "label": 0}
+{"id": "sql_neg_058", "text": "Select the most appropriate option from the list below.", "label": 0}
+{"id": "sql_neg_059", "text": "The database connection string is stored in environment variables.", "label": 0}
+{"id": "sql_neg_060", "text": "We should delete unused indexes to improve write performance.", "label": 0}
+{"id": "sql_neg_061", "text": "The OR condition in the WHERE clause needs careful review.", "label": 0}
+{"id": "sql_neg_062", "text": "Please wait for the transaction to complete before proceeding.", "label": 0}
+{"id": "sql_neg_063", "text": "The version control system tracks all schema changes.", "label": 0}
+{"id": "sql_neg_064", "text": "I need to create a new table for the audit logs.", "label": 0}
+{"id": "sql_neg_065", "text": "The admin password was rotated last week as part of policy.", "label": 0}
+{"id": "sql_neg_066", "text": "Can you select the correct answer from these choices?", "label": 0}
+{"id": "sql_neg_067", "text": "The union of the two sets is {1, 2, 3, 4, 5}.", "label": 0}
+{"id": "sql_neg_068", "text": "We use an ORM to avoid writing raw SQL in most places.", "label": 0}
+{"id": "sql_neg_069", "text": "Please drop the temporary table after the ETL job finishes.", "label": 0}
+{"id": "sql_neg_070", "text": "The grant of stock options is subject to vesting.", "label": 0}
+{"id": "sql_neg_071", "text": "I selected 'None of the above' on the multiple choice question.", "label": 0}
+{"id": "sql_neg_072", "text": "The sleep study results showed mild apnea.", "label": 0}
+{"id": "sql_neg_073", "text": "Can you update the README with the new installation steps?", "label": 0}
+{"id": "sql_neg_074", "text": "The query planner chose a sequential scan instead of an index.", "label": 0}
+{"id": "sql_neg_075", "text": "We should limit the privileges of the application database user.", "label": 0}
+{"id": "sql_neg_076", "text": "Please rename the variable to something more meaningful.", "label": 0}
+{"id": "sql_neg_077", "text": "The shutdown was graceful and no data was lost.", "label": 0}
+{"id": "sql_neg_078", "text": "I need to extract the year from the timestamp column.", "label": 0}
+{"id": "sql_neg_079", "text": "The CONVERT function in SQL Server is used for type casting.", "label": 0}
+{"id": "sql_neg_080", "text": "Can you explain the purpose of the information_schema?", "label": 0}

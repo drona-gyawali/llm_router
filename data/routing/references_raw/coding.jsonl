@@ -1,0 +1,50 @@
+{"id": "ref_cod_001", "text": "Write a Python function to reverse a linked list."}
+{"id": "ref_cod_002", "text": "Debug this JavaScript async await error in my code."}
+{"id": "ref_cod_003", "text": "Implement a binary search algorithm in Java."}
+{"id": "ref_cod_004", "text": "Why is my SQL query returning duplicate rows?"}
+{"id": "ref_cod_005", "text": "Write a REST API endpoint in FastAPI that handles file uploads."}
+{"id": "ref_cod_006", "text": "Explain what this regular expression pattern matches."}
+{"id": "ref_cod_007", "text": "Fix the memory leak in this C++ code."}
+{"id": "ref_cod_008", "text": "Write unit tests for this authentication function."}
+{"id": "ref_cod_009", "text": "How do I implement rate limiting in my Node.js API?"}
+{"id": "ref_cod_010", "text": "Convert this Python script to use async and await."}
+{"id": "ref_cod_011", "text": "Write a Dockerfile for this Python Flask application."}
+{"id": "ref_cod_012", "text": "Why is this TypeScript type check failing?"}
+{"id": "ref_cod_013", "text": "Implement a LRU cache in Go."}
+{"id": "ref_cod_014", "text": "Write a bash script to automate daily log rotation."}
+{"id": "ref_cod_015", "text": "How do I parse nested JSON in Python efficiently?"}
+{"id": "ref_cod_016", "text": "Refactor this class to follow the single responsibility principle."}
+{"id": "ref_cod_017", "text": "Write a Kubernetes deployment YAML for this service."}
+{"id": "ref_cod_018", "text": "Debug why this React component is re-rendering infinitely."}
+{"id": "ref_cod_019", "text": "Implement pagination in this Django REST API."}
+{"id": "ref_cod_020", "text": "Write a function to flatten a deeply nested dictionary."}
+{"id": "ref_cod_021", "text": "How do I handle database transactions in SQLAlchemy?"}
+{"id": "ref_cod_022", "text": "Fix the race condition in this multithreaded Python code."}
+{"id": "ref_cod_023", "text": "Write a GitHub Actions CI pipeline for this project."}
+{"id": "ref_cod_024", "text": "Explain the time complexity of this sorting algorithm."}
+{"id": "ref_cod_025", "text": "Implement OAuth2 authentication in this Express app."}
+{"id": "ref_cod_026", "text": "Write a script to migrate data from PostgreSQL to BigQuery."}
+{"id": "ref_cod_027", "text": "Why is my Python generator not yielding the correct values?"}
+{"id": "ref_cod_028", "text": "Add error handling and retries to this API client."}
+{"id": "ref_cod_029", "text": "Write a recursive function to traverse a binary tree."}
+{"id": "ref_cod_030", "text": "How do I optimize this slow database query with indexing?"}
+{"id": "ref_cod_031", "text": "Implement a pub-sub event system in TypeScript."}
+{"id": "ref_cod_032", "text": "Write a data validation schema using Pydantic."}
+{"id": "ref_cod_033", "text": "Debug this null pointer exception in my Java code."}
+{"id": "ref_cod_034", "text": "How do I set up a Redis cache for this Python service?"}
+{"id": "ref_cod_035", "text": "Write a function to deduplicate a list of dictionaries by key."}
+{"id": "ref_cod_036", "text": "Implement a circuit breaker pattern in this microservice."}
+{"id": "ref_cod_037", "text": "Review this pull request for security vulnerabilities."}
+{"id": "ref_cod_038", "text": "Write a Terraform module to provision a GCP Cloud Run service."}
+{"id": "ref_cod_039", "text": "How do I mock external API calls in my Python unit tests?"}
+{"id": "ref_cod_040", "text": "Fix this off-by-one error in my array iteration."}
+{"id": "ref_cod_041", "text": "Write a gRPC service definition and server in Go."}
+{"id": "ref_cod_042", "text": "Implement retry logic with exponential backoff in Python."}
+{"id": "ref_cod_043", "text": "Why is my Docker container running out of memory?"}
+{"id": "ref_cod_044", "text": "Write a custom middleware for logging requests in FastAPI."}
+{"id": "ref_cod_045", "text": "How do I implement dependency injection in this Python class?"}
+{"id": "ref_cod_046", "text": "Convert this monolithic function into smaller reusable modules."}
+{"id": "ref_cod_047", "text": "Write a script to batch process files in a GCS bucket."}
+{"id": "ref_cod_048", "text": "Debug why this WebSocket connection keeps dropping."}
+{"id": "ref_cod_049", "text": "Implement a token bucket algorithm for rate limiting."}
+{"id": "ref_cod_050", "text": "Write integration tests for this payment processing service."}

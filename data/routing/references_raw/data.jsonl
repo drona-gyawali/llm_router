@@ -1,0 +1,50 @@
+{"id": "ref_dat_001", "text": "Write a BigQuery SQL query to calculate monthly active users."}
+{"id": "ref_dat_002", "text": "Explain why this data pipeline is producing duplicate records."}
+{"id": "ref_dat_003", "text": "Write a pandas script to clean and normalize this CSV dataset."}
+{"id": "ref_dat_004", "text": "How do I join two BigQuery tables efficiently on a large dataset?"}
+{"id": "ref_dat_005", "text": "Write a SQL query to find the top 10 users by revenue last quarter."}
+{"id": "ref_dat_006", "text": "Why does this aggregation query return different results each time?"}
+{"id": "ref_dat_007", "text": "Write a Python script to detect anomalies in this time series data."}
+{"id": "ref_dat_008", "text": "How do I partition this BigQuery table to reduce query costs?"}
+{"id": "ref_dat_009", "text": "Write a dbt model for calculating 7-day rolling average retention."}
+{"id": "ref_dat_010", "text": "Explain what this Dataflow pipeline is doing step by step."}
+{"id": "ref_dat_011", "text": "Write a SQL query to pivot this table from rows to columns."}
+{"id": "ref_dat_012", "text": "How do I handle null values in this dataset before modeling?"}
+{"id": "ref_dat_013", "text": "Write a pandas groupby to calculate per-user session statistics."}
+{"id": "ref_dat_014", "text": "Why is this BigQuery query scanning more bytes than expected?"}
+{"id": "ref_dat_015", "text": "Write a SQL query to calculate week-over-week growth rate."}
+{"id": "ref_dat_016", "text": "How do I efficiently load 100GB of CSV data into BigQuery?"}
+{"id": "ref_dat_017", "text": "Write a Python script to merge and deduplicate these two datasets."}
+{"id": "ref_dat_018", "text": "Explain the difference between RANK and DENSE_RANK in SQL."}
+{"id": "ref_dat_019", "text": "Write a query to identify users who churned in the last 30 days."}
+{"id": "ref_dat_020", "text": "How do I visualize this dataset distribution using matplotlib?"}
+{"id": "ref_dat_021", "text": "Write a SQL window function to calculate cumulative revenue by month."}
+{"id": "ref_dat_022", "text": "Why is my pandas merge producing more rows than the original tables?"}
+{"id": "ref_dat_023", "text": "Write a BigQuery scheduled query to refresh this dashboard table daily."}
+{"id": "ref_dat_024", "text": "How do I sample 1% of this large dataset for testing?"}
+{"id": "ref_dat_025", "text": "Write a SQL query to calculate median session duration per user."}
+{"id": "ref_dat_026", "text": "Explain what this data quality check is testing for."}
+{"id": "ref_dat_027", "text": "Write a Python script to calculate feature importance from this model."}
+{"id": "ref_dat_028", "text": "How do I handle schema evolution in this Avro data pipeline?"}
+{"id": "ref_dat_029", "text": "Write a SQL query to find all users who completed the onboarding funnel."}
+{"id": "ref_dat_030", "text": "Why is my time zone conversion in BigQuery producing wrong results?"}
+{"id": "ref_dat_031", "text": "Write a pandas script to reshape this wide format data to long format."}
+{"id": "ref_dat_032", "text": "How do I calculate statistical significance for this A/B test result?"}
+{"id": "ref_dat_033", "text": "Write a SQL query to calculate the conversion rate by marketing channel."}
+{"id": "ref_dat_034", "text": "Explain why this join is producing a cartesian product."}
+{"id": "ref_dat_035", "text": "Write a Python script to validate data types in this pipeline input."}
+{"id": "ref_dat_036", "text": "How do I cluster a BigQuery table to improve query performance?"}
+{"id": "ref_dat_037", "text": "Write a query to calculate average revenue per user by cohort month."}
+{"id": "ref_dat_038", "text": "Why are there gaps in my time series data and how do I fill them?"}
+{"id": "ref_dat_039", "text": "Write a dbt test to assert referential integrity between these tables."}
+{"id": "ref_dat_040", "text": "How do I export BigQuery query results to a GCS bucket automatically?"}
+{"id": "ref_dat_041", "text": "Write a SQL query to calculate the p50 p90 and p99 of API latency."}
+{"id": "ref_dat_042", "text": "Explain why this pandas operation is using too much memory."}
+{"id": "ref_dat_043", "text": "Write a Python script to generate a correlation matrix for these features."}
+{"id": "ref_dat_044", "text": "How do I implement slowly changing dimensions in this data warehouse?"}
+{"id": "ref_dat_045", "text": "Write a SQL query to identify the most common error codes in the logs."}
+{"id": "ref_dat_046", "text": "Why does my streaming pipeline have increasing lag over time?"}
+{"id": "ref_dat_047", "text": "Write a pandas script to standardize column names across multiple files."}
+{"id": "ref_dat_048", "text": "How do I calculate DAU MAU ratio from our event tracking data?"}
+{"id": "ref_dat_049", "text": "Write a SQL query to find duplicate records based on multiple columns."}
+{"id": "ref_dat_050", "text": "Explain the output of this confusion matrix from our classification model."}

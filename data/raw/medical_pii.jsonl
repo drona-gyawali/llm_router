@@ -1,0 +1,120 @@
+{"id": "med_pos_001", "text": "Patient John Smith, DOB 03/15/1978, SSN 123-45-6789, diagnosed with diabetes.", "label": 1}
+{"id": "med_pos_002", "text": "Medical record for Jane Doe: MRN 987654, address 123 Main St, allergy to penicillin.", "label": 1}
+{"id": "med_pos_003", "text": "Contact patient at 555-123-4567 regarding lab results for HIV test.", "label": 1}
+{"id": "med_pos_004", "text": "Emily Johnson, born 1985-07-22, insurance ID AETNA-445566, recent chemotherapy.", "label": 1}
+{"id": "med_pos_005", "text": "SSN: 987-65-4321 belongs to Robert Williams who has stage 3 cancer.", "label": 1}
+{"id": "med_pos_006", "text": "Patient phone number 312-555-0198, email robert.w@email.com, blood type O negative.", "label": 1}
+{"id": "med_pos_007", "text": "Mary Thompson DOB 11/30/1962, home address 456 Oak Avenue, Chicago IL 60601.", "label": 1}
+{"id": "med_pos_008", "text": "Please call the patient at +1-415-555-7823 to discuss the positive pregnancy test.", "label": 1}
+{"id": "med_pos_009", "text": "Medical Record Number: 4455667788 for David Lee, diagnosed with schizophrenia.", "label": 1}
+{"id": "med_pos_010", "text": "Insurance policy number BCBS-998877 for patient with full name Michael Brown.", "label": 1}
+{"id": "med_pos_011", "text": "The patient's social security number is 321-54-9876 and they have hepatitis C.", "label": 1}
+{"id": "med_pos_012", "text": "Contact: Sarah Martinez, 789 Pine Road, phone 206-555-3344, history of opioid use.", "label": 1}
+{"id": "med_pos_013", "text": "Lab results for patient ID 112233: HIV positive, notify at home address listed.", "label": 1}
+{"id": "med_pos_014", "text": "Full name: Patricia Garcia, DOB 04/12/1990, SSN 555-44-3333, bipolar disorder.", "label": 1}
+{"id": "med_pos_015", "text": "Patient email: jennifer.wilson@gmail.com, phone 617-555-2211, recent miscarriage.", "label": 1}
+{"id": "med_pos_016", "text": "MRN 778899, Thomas Anderson, 321 Elm Street, Seattle WA, diagnosed with TB.", "label": 1}
+{"id": "med_pos_017", "text": "Please update the record: patient has SSN 111-22-3333 and lives at 999 Broadway.", "label": 1}
+{"id": "med_pos_018", "text": "Nancy Clark, born May 5 1975, insurance member ID 667788, breast cancer treatment.", "label": 1}
+{"id": "med_pos_019", "text": "Call 503-555-6677 to inform the patient of their positive drug screening results.", "label": 1}
+{"id": "med_pos_020", "text": "Patient Kevin White, address 222 Maple Dr, phone 714-555-8899, HIV status positive.", "label": 1}
+{"id": "med_pos_021", "text": "The individual with DOB 09/18/1988 and SSN 444-55-6666 has been prescribed lithium.", "label": 1}
+{"id": "med_pos_022", "text": "Medical history for Lisa Rodriguez: MRN 334455, email lisa.r@outlook.com, depression.", "label": 1}
+{"id": "med_pos_023", "text": "Home phone 858-555-1122, mobile 858-555-3344 for patient with recent abortion.", "label": 1}
+{"id": "med_pos_024", "text": "Full legal name Christopher Harris, SSN 777-88-9999, address 555 Cedar Lane.", "label": 1}
+{"id": "med_pos_025", "text": "Patient portal login linked to email amanda.taylor@yahoo.com and phone 404-555-7788.", "label": 1}
+{"id": "med_pos_026", "text": "DOB 12/25/1955, Medicare ID 1EG4-TE5-MK72, patient has Alzheimer's disease.", "label": 1}
+{"id": "med_pos_027", "text": "Please send the pathology report to the patient's home: 777 Willow Court, Austin TX.", "label": 1}
+{"id": "med_pos_028", "text": "Brian Scott, phone +1-212-555-9900, diagnosed with syphilis, contact ASAP.", "label": 1}
+{"id": "med_pos_029", "text": "The patient's insurance card shows ID number UHC-123456789 and name Michelle Adams.", "label": 1}
+{"id": "med_pos_030", "text": "SSN 222-33-4444, full name Daniel Baker, recent positive COVID and HIV co-infection.", "label": 1}
+{"id": "med_pos_031", "text": "Address on file: 888 Birch Street, Boston MA 02101 for patient with eating disorder.", "label": 1}
+{"id": "med_pos_032", "text": "Email the results to karen.nelson@email.com regarding her positive pregnancy test.", "label": 1}
+{"id": "med_pos_033", "text": "Patient ID 556677, DOB 02/14/2001, phone 305-555-4433, history of self-harm.", "label": 1}
+{"id": "med_pos_034", "text": "Richard Moore SSN 666-77-8888 has been admitted for alcohol detoxification.", "label": 1}
+{"id": "med_pos_035", "text": "Contact number 916-555-2211 belongs to the patient who tested positive for hepatitis B.", "label": 1}
+{"id": "med_pos_036", "text": "Full name and DOB: Stephanie Young, 08/09/1979, address 111 Spruce Ave, Denver CO.", "label": 1}
+{"id": "med_pos_037", "text": "MRN 990011, email jason.hall@gmail.com, patient has a history of sexual assault.", "label": 1}
+{"id": "med_pos_038", "text": "Please update: phone 702-555-6677, SSN 333-44-5555, diagnosis of gonorrhea.", "label": 1}
+{"id": "med_pos_039", "text": "The patient living at 444 Aspen Way, Portland OR has a positive chlamydia test.", "label": 1}
+{"id": "med_pos_040", "text": "Insurance group number 998877 for Laura King, DOB 06/21/1983, chemotherapy ongoing.", "label": 1}
+{"id": "med_pos_041", "text": "Call 619-555-8899 to discuss the patient's recent suicide attempt and hospitalization.", "label": 1}
+{"id": "med_pos_042", "text": "Patient portal account linked to SSN 888-99-0000 and email for mental health records.", "label": 1}
+{"id": "med_pos_043", "text": "Name: Eric Wright, address 666 Redwood Blvd, phone 510-555-1122, HIV treatment plan.", "label": 1}
+{"id": "med_pos_044", "text": "DOB 01/01/1960, Medicare Beneficiary Identifier 1AB2-CD3-EF45, dementia diagnosis.", "label": 1}
+{"id": "med_pos_045", "text": "Please notify the patient at 773-555-3344 about the positive result for HPV.", "label": 1}
+{"id": "med_pos_046", "text": "Full name Jessica Lopez, SSN 999-00-1111, home address 333 Magnolia St, Miami FL.", "label": 1}
+{"id": "med_pos_047", "text": "MRN 223344, email linked to patient with recent diagnosis of cervical cancer.", "label": 1}
+{"id": "med_pos_048", "text": "The individual with phone number 415-555-7788 has a history of domestic violence injuries.", "label": 1}
+{"id": "med_pos_049", "text": "Patient record: DOB 10/31/1995, insurance ID CIGNA-445566, prescribed antidepressants.", "label": 1}
+{"id": "med_pos_050", "text": "SSN 123-98-7654 belongs to the patient currently undergoing gender-affirming care.", "label": 1}
+{"id": "med_pos_051", "text": "Contact: 972-555-9900, email for patient who disclosed history of sexual abuse.", "label": 1}
+{"id": "med_pos_052", "text": "Address 1010 Oakridge Drive, Dallas TX for patient with positive tuberculosis culture.", "label": 1}
+{"id": "med_pos_053", "text": "Please update the chart with phone 281-555-2211 and the patient's HIV viral load.", "label": 1}
+{"id": "med_pos_054", "text": "Full name and SSN: Anthony Green, 456-78-9012, recent involuntary psychiatric hold.", "label": 1}
+{"id": "med_pos_055", "text": "The patient at 222 Lakeview Rd has a positive test for syphilis and needs notification.", "label": 1}
+{"id": "med_pos_056", "text": "Email results to the address on file for patient with MRN 667788 and DOB 03/03/1980.", "label": 1}
+{"id": "med_pos_057", "text": "Phone 313-555-6677 is the contact for the individual diagnosed with hepatitis C.", "label": 1}
+{"id": "med_pos_058", "text": "Patient name Melissa Carter, address 777 Riverside Ave, SSN 321-65-4987, bipolar.", "label": 1}
+{"id": "med_pos_059", "text": "Insurance member ID AET-99887766 for the patient with recent positive pregnancy test.", "label": 1}
+{"id": "med_pos_060", "text": "Please call 408-555-3344 regarding the patient's positive drug test for opioids.", "label": 1}
+{"id": "med_neg_001", "text": "The patient presented with symptoms of type 2 diabetes and was started on metformin.", "label": 0}
+{"id": "med_neg_002", "text": "Please update the medical record with the latest lab values for glucose and A1C.", "label": 0}
+{"id": "med_neg_003", "text": "Patients with penicillin allergies should receive alternative antibiotics.", "label": 0}
+{"id": "med_neg_004", "text": "The average age of patients in the study was 45 years with a range of 18 to 72.", "label": 0}
+{"id": "med_neg_005", "text": "Contact the laboratory for the results of the complete blood count.", "label": 0}
+{"id": "med_neg_006", "text": "Insurance coverage for chemotherapy varies depending on the specific policy.", "label": 0}
+{"id": "med_neg_007", "text": "The medical record number is used to uniquely identify each encounter.", "label": 0}
+{"id": "med_neg_008", "text": "Patients should be informed about the risks and benefits of the procedure.", "label": 0}
+{"id": "med_neg_009", "text": "A social security number is required for certain billing and insurance processes.", "label": 0}
+{"id": "med_neg_010", "text": "The phone number for the clinic is listed on the appointment reminder card.", "label": 0}
+{"id": "med_neg_011", "text": "Email is an acceptable method for sending non-urgent appointment confirmations.", "label": 0}
+{"id": "med_neg_012", "text": "Patients with a history of opioid use disorder require careful pain management.", "label": 0}
+{"id": "med_neg_013", "text": "The address of the hospital is 100 Medical Center Drive.", "label": 0}
+{"id": "med_neg_014", "text": "Date of birth is one of the identifiers used to verify patient identity.", "label": 0}
+{"id": "med_neg_015", "text": "HIV testing should be offered to all patients as part of routine care.", "label": 0}
+{"id": "med_neg_016", "text": "The pathology report will be available in the electronic health record system.", "label": 0}
+{"id": "med_neg_017", "text": "Patients diagnosed with schizophrenia often benefit from a combination of therapy and medication.", "label": 0}
+{"id": "med_neg_018", "text": "Blood type is an important piece of information for transfusion medicine.", "label": 0}
+{"id": "med_neg_019", "text": "The insurance ID is printed on the front of the membership card.", "label": 0}
+{"id": "med_neg_020", "text": "Please call the nurse's station if you have questions about the medication schedule.", "label": 0}
+{"id": "med_neg_021", "text": "A positive pregnancy test should be confirmed with a serum hCG level.", "label": 0}
+{"id": "med_neg_022", "text": "Patients with hepatitis C can now be cured with direct-acting antiviral therapy.", "label": 0}
+{"id": "med_neg_023", "text": "The email system used for patient communication is encrypted and HIPAA compliant.", "label": 0}
+{"id": "med_neg_024", "text": "Medical record numbers should never be shared outside of authorized systems.", "label": 0}
+{"id": "med_neg_025", "text": "The average length of stay for patients with this diagnosis is 4.2 days.", "label": 0}
+{"id": "med_neg_026", "text": "Patients should be asked about drug allergies at every clinical encounter.", "label": 0}
+{"id": "med_neg_027", "text": "The laboratory will notify the ordering provider of critical values.", "label": 0}
+{"id": "med_neg_028", "text": "Social determinants of health include factors such as housing and food security.", "label": 0}
+{"id": "med_neg_029", "text": "A complete medical history includes past surgeries, medications, and family history.", "label": 0}
+{"id": "med_neg_030", "text": "Patients with bipolar disorder may experience periods of mania and depression.", "label": 0}
+{"id": "med_neg_031", "text": "The phone tree system routes calls to the appropriate department.", "label": 0}
+{"id": "med_neg_032", "text": "Date of birth verification is part of the standard patient identification process.", "label": 0}
+{"id": "med_neg_033", "text": "HIV status is considered protected health information under HIPAA.", "label": 0}
+{"id": "med_neg_034", "text": "The address change form must be completed and signed by the patient.", "label": 0}
+{"id": "med_neg_035", "text": "Patients undergoing chemotherapy should be monitored for side effects.", "label": 0}
+{"id": "med_neg_036", "text": "Insurance prior authorization is required for certain specialty medications.", "label": 0}
+{"id": "med_neg_037", "text": "The medical record should document all discussions about advanced directives.", "label": 0}
+{"id": "med_neg_038", "text": "A positive test result for a sexually transmitted infection requires partner notification.", "label": 0}
+{"id": "med_neg_039", "text": "Patients with a history of self-harm should be assessed for current risk.", "label": 0}
+{"id": "med_neg_040", "text": "The clinic's main phone number is answered during business hours only.", "label": 0}
+{"id": "med_neg_041", "text": "Email communication with patients should avoid including sensitive diagnoses.", "label": 0}
+{"id": "med_neg_042", "text": "Social security numbers are used for tax reporting and certain government programs.", "label": 0}
+{"id": "med_neg_043", "text": "The patient's preferred pharmacy can be updated in the electronic health record.", "label": 0}
+{"id": "med_neg_044", "text": "Patients with Alzheimer's disease benefit from structured daily routines.", "label": 0}
+{"id": "med_neg_045", "text": "A positive drug screen should be discussed with the patient in a non-judgmental manner.", "label": 0}
+{"id": "med_neg_046", "text": "The pathology department can be reached at the extension listed in the directory.", "label": 0}
+{"id": "med_neg_047", "text": "Medical record retention policies vary by state and type of record.", "label": 0}
+{"id": "med_neg_048", "text": "Patients should be educated about the importance of medication adherence.", "label": 0}
+{"id": "med_neg_049", "text": "The insurance verification process confirms coverage before scheduled procedures.", "label": 0}
+{"id": "med_neg_050", "text": "Date of birth is used as one of several identifiers in the matching algorithm.", "label": 0}
+{"id": "med_neg_051", "text": "HIV pre-exposure prophylaxis is recommended for individuals at high risk.", "label": 0}
+{"id": "med_neg_052", "text": "The address on the driver's license is used for identity verification.", "label": 0}
+{"id": "med_neg_053", "text": "Patients with eating disorders require a multidisciplinary treatment approach.", "label": 0}
+{"id": "med_neg_054", "text": "Phone consultations are appropriate for certain follow-up appointments.", "label": 0}
+{"id": "med_neg_055", "text": "Email reminders for appointments have been shown to reduce no-show rates.", "label": 0}
+{"id": "med_neg_056", "text": "Social history includes information about tobacco, alcohol, and substance use.", "label": 0}
+{"id": "med_neg_057", "text": "The medical record number appears on wristbands and labels for identification.", "label": 0}
+{"id": "med_neg_058", "text": "Patients diagnosed with tuberculosis require public health notification.", "label": 0}
+{"id": "med_neg_059", "text": "A positive chlamydia test is treated with a single dose of azithromycin in most cases.", "label": 0}
+{"id": "med_neg_060", "text": "The clinic address and hours of operation are posted on the website.", "label": 0}

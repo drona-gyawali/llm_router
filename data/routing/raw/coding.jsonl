@@ -1,0 +1,50 @@
+{"id": "cod_pos_001", "text": "Help me implement a binary search tree in Python.", "label": 1}
+{"id": "cod_pos_002", "text": "Why is my React useEffect hook firing twice on mount?", "label": 1}
+{"id": "cod_pos_003", "text": "Write a Terraform script to create a GCP Cloud Storage bucket.", "label": 1}
+{"id": "cod_pos_004", "text": "How do I handle concurrent writes to the same database row in Go?", "label": 1}
+{"id": "cod_pos_005", "text": "Write a function to validate email addresses using regex in Python.", "label": 1}
+{"id": "cod_pos_006", "text": "Debug this segmentation fault in my C++ program.", "label": 1}
+{"id": "cod_pos_007", "text": "How do I set up JWT authentication in my Django REST API?", "label": 1}
+{"id": "cod_pos_008", "text": "Write a Python decorator for caching function results.", "label": 1}
+{"id": "cod_pos_009", "text": "Why is my Kubernetes pod stuck in CrashLoopBackOff?", "label": 1}
+{"id": "cod_pos_010", "text": "Implement a depth-first search algorithm in JavaScript.", "label": 1}
+{"id": "cod_pos_011", "text": "Write a SQL trigger to automatically update a timestamp column.", "label": 1}
+{"id": "cod_pos_012", "text": "How do I configure CORS in my FastAPI application?", "label": 1}
+{"id": "cod_pos_013", "text": "Write a Python context manager for database connections.", "label": 1}
+{"id": "cod_pos_014", "text": "Fix this memory leak in my Node.js event listener code.", "label": 1}
+{"id": "cod_pos_015", "text": "How do I implement cursor-based pagination in a GraphQL API?", "label": 1}
+{"id": "cod_pos_016", "text": "Write a shell script to monitor disk usage and send alerts.", "label": 1}
+{"id": "cod_pos_017", "text": "Why is my Python multiprocessing code slower than single-threaded?", "label": 1}
+{"id": "cod_pos_018", "text": "Implement a debounce function in TypeScript.", "label": 1}
+{"id": "cod_pos_019", "text": "Write a Cloud Function that triggers on new GCS object creation.", "label": 1}
+{"id": "cod_pos_020", "text": "How do I write an idempotent database migration script?", "label": 1}
+{"id": "cod_pos_021", "text": "Implement a producer-consumer queue using Python asyncio.", "label": 1}
+{"id": "cod_pos_022", "text": "Why does my Dockerfile build succeed but container fails at runtime?", "label": 1}
+{"id": "cod_pos_023", "text": "Write a reusable HTTP client with retry logic in Go.", "label": 1}
+{"id": "cod_pos_024", "text": "How do I safely deserialize untrusted JSON input in Java?", "label": 1}
+{"id": "cod_pos_025", "text": "Write a pytest fixture for mocking an external payment API.", "label": 1}
+{"id": "cod_neg_001", "text": "What is the difference between a monolith and microservices?", "label": 0}
+{"id": "cod_neg_002", "text": "Summarize the key points of this system design document.", "label": 0}
+{"id": "cod_neg_003", "text": "Write a blog post announcing our new API product launch.", "label": 0}
+{"id": "cod_neg_004", "text": "Should we use Kafka or Pub/Sub for our event streaming needs?", "label": 0}
+{"id": "cod_neg_005", "text": "Write a BigQuery SQL query to find monthly active users.", "label": 0}
+{"id": "cod_neg_006", "text": "What does idempotent mean in plain terms?", "label": 0}
+{"id": "cod_neg_007", "text": "Summarize the findings from this quarterly engineering review.", "label": 0}
+{"id": "cod_neg_008", "text": "What are the tradeoffs between strong and eventual consistency?", "label": 0}
+{"id": "cod_neg_009", "text": "Write a tagline for our internal developer productivity tool.", "label": 0}
+{"id": "cod_neg_010", "text": "What does p99 latency mean?", "label": 0}
+{"id": "cod_neg_011", "text": "Extract all action items from this project status report.", "label": 0}
+{"id": "cod_neg_012", "text": "Evaluate whether we should adopt GraphQL for our public API.", "label": 0}
+{"id": "cod_neg_013", "text": "Write an engaging description of our engineering team culture.", "label": 0}
+{"id": "cod_neg_014", "text": "How do I calculate week-over-week growth rate in pandas?", "label": 0}
+{"id": "cod_neg_015", "text": "What is a service mesh and when should we use one?", "label": 0}
+{"id": "cod_neg_016", "text": "Draft a welcome email for engineers joining our platform team.", "label": 0}
+{"id": "cod_neg_017", "text": "What are the open risks listed in this project proposal document?", "label": 0}
+{"id": "cod_neg_018", "text": "Analyze the cost implications of moving from VMs to Cloud Run.", "label": 0}
+{"id": "cod_neg_019", "text": "What does CAP theorem say about distributed systems?", "label": 0}
+{"id": "cod_neg_020", "text": "Write a dbt model to calculate 7-day rolling average retention.", "label": 0}
+{"id": "cod_neg_021", "text": "Suggest five creative names for our new internal search tool.", "label": 0}
+{"id": "cod_neg_022", "text": "What is the difference between latency and throughput?", "label": 0}
+{"id": "cod_neg_023", "text": "Give me a summary of this incident postmortem document.", "label": 0}
+{"id": "cod_neg_024", "text": "Should we prioritize tech debt or the next major feature?", "label": 0}
+{"id": "cod_neg_025", "text": "Write a pandas script to detect anomalies in time series data.", "label": 0}

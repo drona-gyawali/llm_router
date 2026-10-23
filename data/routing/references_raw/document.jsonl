@@ -1,0 +1,50 @@
+{"id": "ref_doc_001", "text": "Summarize this 40-page system design document into key points."}
+{"id": "ref_doc_002", "text": "Extract all action items from this meeting transcript."}
+{"id": "ref_doc_003", "text": "What are the main conclusions of this research paper?"}
+{"id": "ref_doc_004", "text": "Translate this technical RFC into plain language for stakeholders."}
+{"id": "ref_doc_005", "text": "Summarize the key decisions made in this architecture review document."}
+{"id": "ref_doc_006", "text": "Extract all deadlines and owners from this project plan."}
+{"id": "ref_doc_007", "text": "What does this legal agreement say about data retention?"}
+{"id": "ref_doc_008", "text": "Give me a one-paragraph summary of this incident postmortem."}
+{"id": "ref_doc_009", "text": "List all the requirements mentioned in this product specification."}
+{"id": "ref_doc_010", "text": "Summarize the feedback from this user research report."}
+{"id": "ref_doc_011", "text": "What are the open questions remaining in this design doc?"}
+{"id": "ref_doc_012", "text": "Extract the performance benchmarks from this technical report."}
+{"id": "ref_doc_013", "text": "Summarize what changed between version 1 and version 2 of this spec."}
+{"id": "ref_doc_014", "text": "What risks are identified in this project proposal?"}
+{"id": "ref_doc_015", "text": "Give me a bullet point summary of this quarterly engineering review."}
+{"id": "ref_doc_016", "text": "Extract all API endpoints documented in this integration guide."}
+{"id": "ref_doc_017", "text": "What are the acceptance criteria listed in this ticket?"}
+{"id": "ref_doc_018", "text": "Summarize the pros and cons listed in this vendor comparison document."}
+{"id": "ref_doc_019", "text": "What is the recommended approach according to this best practices guide?"}
+{"id": "ref_doc_020", "text": "Extract all configuration options from this documentation page."}
+{"id": "ref_doc_021", "text": "Give me a TL;DR of this long Slack thread about the outage."}
+{"id": "ref_doc_022", "text": "What decisions are still pending in this product roadmap document?"}
+{"id": "ref_doc_023", "text": "Summarize the migration steps from this runbook."}
+{"id": "ref_doc_024", "text": "What are the known limitations described in this API documentation?"}
+{"id": "ref_doc_025", "text": "Extract the key metrics and targets from this OKR document."}
+{"id": "ref_doc_026", "text": "Summarize the security requirements in this compliance document."}
+{"id": "ref_doc_027", "text": "What does this contract say about service level agreements?"}
+{"id": "ref_doc_028", "text": "List all the breaking changes in this changelog."}
+{"id": "ref_doc_029", "text": "Summarize the root cause and resolution from this incident report."}
+{"id": "ref_doc_030", "text": "What are the main arguments in this engineering proposal?"}
+{"id": "ref_doc_031", "text": "Extract all the dependencies listed in this architecture diagram description."}
+{"id": "ref_doc_032", "text": "Give me a summary of this code review feedback document."}
+{"id": "ref_doc_033", "text": "What does this policy document say about external API usage?"}
+{"id": "ref_doc_034", "text": "Summarize the test results from this QA report."}
+{"id": "ref_doc_035", "text": "Extract all the user stories from this product requirements document."}
+{"id": "ref_doc_036", "text": "What are the prerequisites listed in this onboarding document?"}
+{"id": "ref_doc_037", "text": "Summarize this email thread about the database migration plan."}
+{"id": "ref_doc_038", "text": "What are the next steps outlined in this strategy document?"}
+{"id": "ref_doc_039", "text": "Extract all the error codes and their meanings from this API reference."}
+{"id": "ref_doc_040", "text": "Give me a concise summary of this technical interview debrief document."}
+{"id": "ref_doc_041", "text": "What are the success metrics defined in this project charter?"}
+{"id": "ref_doc_042", "text": "Summarize the key findings from this performance testing report."}
+{"id": "ref_doc_043", "text": "Extract the rollback procedure from this deployment runbook."}
+{"id": "ref_doc_044", "text": "What approvals are required according to this governance document?"}
+{"id": "ref_doc_045", "text": "Summarize what this RFC proposes and what alternatives were considered."}
+{"id": "ref_doc_046", "text": "List all the open bugs mentioned in this sprint retrospective."}
+{"id": "ref_doc_047", "text": "What does this data dictionary say about the schema for user events?"}
+{"id": "ref_doc_048", "text": "Summarize the budget breakdown in this resource planning document."}
+{"id": "ref_doc_049", "text": "Extract all the monitoring alerts defined in this observability guide."}
+{"id": "ref_doc_050", "text": "Give me a summary of the discussion and outcome from this design review doc."}

