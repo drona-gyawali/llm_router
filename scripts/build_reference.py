@@ -1,30 +1,3 @@
-"""
-Generic reference embedding builder.
-
-Reads positive-example JSONL files from a source directory,
-encodes them with a SentenceTransformer model, and saves the
-resulting numpy arrays to an output directory.
-
-Works for ANY category set — guardrails, routing, or custom.
-
-Usage
------
-# Guardrail references (default)
-python scripts/build_reference.py
-
-# Routing references
-python scripts/build_reference.py \
-    --source  data/routing/references_raw \
-    --output  data/routing/references
-
-# Custom source, output, and model
-python scripts/build_reference.py \
-    --source  data/my_categories/references_raw \
-    --output  data/my_categories/references \
-    --model   all-mpnet-base-v2 \
-    --batch   64
-"""
-
 from __future__ import annotations
 
 import argparse

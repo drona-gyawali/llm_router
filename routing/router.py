@@ -1,13 +1,5 @@
 from __future__ import annotations
 
-"""
-Rule-Based Routing Engine (config-driven)
-─────────────────────────────────────────
-All routing rules and model assignments come from models.yaml via
-ROUTING_CONFIG. No model names or thresholds are hardcoded here.
-
-To change routing behaviour → edit models.yaml only.
-"""
 
 import logging
 import re

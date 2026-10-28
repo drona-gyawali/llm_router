@@ -1,39 +1,3 @@
-#!/usr/bin/env python3
-"""
-Threshold optimizer for embedding-based category classifiers.
-
-Loads category reference embeddings and labeled evaluation data (JSONL),
-computes cosine similarities, sweeps decision thresholds, and writes the
-per-category threshold that maximises F1 to a JSON config file.
-
-Works for ANY category set — guardrails, routing, or custom.
-
-Usage
------
-# Guardrail thresholds (default — backward compatible)
-python scripts/benchmark_threshold.py
-
-# Routing thresholds
-python scripts/benchmark_threshold.py \
-    --raw    data/routing/raw \
-    --refs   data/routing/references \
-    --output data/routing/thresholds.json
-
-# Custom model and threshold sweep range
-python scripts/benchmark_threshold.py \
-    --raw    data/routing/raw \
-    --refs   data/routing/references \
-    --output data/routing/thresholds.json \
-    --model  all-MiniLM-L6-v2 \
-    --thresh-min 0.30 \
-    --thresh-max 0.95 \
-    --thresh-step 0.01
-
-# Only benchmark specific categories
-python scripts/benchmark_threshold.py \
-    --categories coding general
-"""
-
 from __future__ import annotations
 
 import argparse
