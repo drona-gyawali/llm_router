@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 import uuid
 from unittest.mock import AsyncMock, MagicMock, patch
 
@@ -18,8 +19,7 @@ from db.session import get_db
 from gateway.auth import generate_api_key
 from main import app
 
-# ── In-memory SQLite test engine ───────────────────────────────────────────────
-TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
+TEST_DATABASE_URL = os.environ["DATABASE_URL"]
 
 test_engine = create_async_engine(TEST_DATABASE_URL, echo=False)
 TestingSessionLocal = async_sessionmaker(
