@@ -19,7 +19,12 @@ from db.session import get_db
 from gateway.auth import generate_api_key
 from main import app
 
-TEST_DATABASE_URL = os.environ["DATABASE_URL"]
+# ── Test database ──────────────────────────────────────────────────────────────
+# Uses Postgres in CI (DATABASE_URL set), SQLite locally as fallback.
+TEST_DATABASE_URL = os.environ.get(
+    "DATABASE_URL", "sqlite+aiosqlite:///:memory:"
+)
+USING_POSTGRES = TEST_DATABASE_URL.startswith("postgresql")
 
 test_engine = create_async_engine(TEST_DATABASE_URL, echo=False)
 TestingSessionLocal = async_sessionmaker(
@@ -192,18 +197,20 @@ class TestBudgetRaceCondition:
 
         print(f"\n  Concurrent: {passed} passed, {blocked} blocked out of 10")
 
-        # ── Toggle this once you add SELECT FOR UPDATE ─────────────────────
-        # STRICT (after fix):
-        #   assert passed <= 1, f"Race condition: {passed} requests passed budget gate"
-        #
-        # DIAGNOSTIC (current — documents the known bug without failing CI):
-        if passed == 10:
-            import warnings
-            warnings.warn(
-                f"KNOWN RACE CONDITION: all 10 concurrent requests passed. "
-                f"Fix: add SELECT FOR UPDATE in record_usage().",
-                stacklevel=2,
+        if USING_POSTGRES:
+            # SELECT FOR UPDATE works on Postgres — enforce strict budget gate
+            assert passed <= 1, (
+                f"Race condition on Postgres: {passed}/10 requests passed "
+                f"the budget gate. Expected ≤ 1."
             )
-        # At minimum, assert the budget check exists at all
-        # (if record_usage were actually writing, some would be blocked)
-        assert passed > 0, "No requests passed — something else is broken"
+        else:
+            # SQLite ignores WITH FOR UPDATE — document the known limitation
+            import warnings
+            if passed == 10:
+                warnings.warn(
+                    "KNOWN LIMITATION: SQLite ignores SELECT FOR UPDATE. "
+                    "Race condition test is informational only on SQLite. "
+                    "Run against Postgres (set DATABASE_URL) for strict enforcement.",
+                    stacklevel=2,
+                )
+            assert passed > 0, "No requests passed — something else is broken"

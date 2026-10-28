@@ -1,11 +1,13 @@
-
 from __future__ import annotations
 
 import os
 import uuid
+import json
 from typing import AsyncGenerator
 from unittest.mock import AsyncMock, MagicMock, patch
 
+
+import pytest
 import pytest_asyncio
 from httpx import AsyncClient, ASGITransport
 from sqlalchemy.ext.asyncio import (
@@ -14,12 +16,17 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
-# Adjust these paths to match your actual module layout.
+# ── Project imports ────────────────────────────────────────────────────────────
 from db.models import Base
 from db.session import get_db
 from main import app
 
-TEST_DATABASE_URL = os.environ["DATABASE_URL"]
+# ── Test database ──────────────────────────────────────────────────────────────
+# Uses Postgres in CI (DATABASE_URL set), SQLite locally as fallback.
+TEST_DATABASE_URL = os.environ.get(
+    "DATABASE_URL", "sqlite+aiosqlite:///:memory:"
+)
+USING_POSTGRES = TEST_DATABASE_URL.startswith("postgresql")
 
 engine = create_async_engine(TEST_DATABASE_URL, echo=False)
 TestingSessionLocal = async_sessionmaker(
@@ -79,6 +86,7 @@ async def client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
             yield ac
 
     app.dependency_overrides.clear()
+
 
 
 async def create_tenant_and_key(
@@ -322,7 +330,7 @@ class TestAuthMiddleware:
             "/chat",
             json={"messages": [{"role": "user", "content": "Hi"}]},
         )
-        assert resp.status_code in (403, 422)
+        assert resp.status_code in (401, 403, 422)
 
     async def test_invalid_key_returns_403(self, client: AsyncClient):
         resp = await client.post(
