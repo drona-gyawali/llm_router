@@ -4,16 +4,16 @@ import argparse
 import json
 import logging
 import sys
+from collections.abc import Sequence
 from pathlib import Path
-from typing import List, Sequence
 
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
 DEFAULT_SOURCE = Path("data/references_raw")
 DEFAULT_OUTPUT = Path("data/references")
-DEFAULT_MODEL  = "all-MiniLM-L6-v2"
-DEFAULT_BATCH  = 32
+DEFAULT_MODEL = "all-MiniLM-L6-v2"
+DEFAULT_BATCH = 32
 
 logging.basicConfig(
     level=logging.INFO,
@@ -24,37 +24,46 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Build reference embeddings for any category set.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument(
-        "--source", type=Path, default=DEFAULT_SOURCE,
+        "--source",
+        type=Path,
+        default=DEFAULT_SOURCE,
         help="Directory containing *.jsonl reference files.",
     )
     parser.add_argument(
-        "--output", type=Path, default=DEFAULT_OUTPUT,
+        "--output",
+        type=Path,
+        default=DEFAULT_OUTPUT,
         help="Directory to write .npy embedding files.",
     )
     parser.add_argument(
-        "--model", type=str, default=DEFAULT_MODEL,
+        "--model",
+        type=str,
+        default=DEFAULT_MODEL,
         help="SentenceTransformer model name or local path.",
     )
     parser.add_argument(
-        "--batch", type=int, default=DEFAULT_BATCH,
+        "--batch",
+        type=int,
+        default=DEFAULT_BATCH,
         help="Encoding batch size.",
     )
     parser.add_argument(
-        "--categories", nargs="*", default=None,
+        "--categories",
+        nargs="*",
+        default=None,
         help="Optional whitelist of category names (stems). "
-             "If omitted, all *.jsonl files in --source are processed.",
+        "If omitted, all *.jsonl files in --source are processed.",
     )
     return parser.parse_args()
 
 
-def load_positive_texts(file_path: Path) -> List[str]:
+def load_positive_texts(file_path: Path) -> list[str]:
     """
     Load texts from a JSONL file.
 
@@ -65,7 +74,7 @@ def load_positive_texts(file_path: Path) -> List[str]:
     Lines with label != 1 are silently skipped so the same file can be
     used as a reference source even if it contains negatives.
     """
-    texts: List[str] = []
+    texts: list[str] = []
 
     with file_path.open("r", encoding="utf-8") as f:
         for line_num, line in enumerate(f, start=1):
@@ -97,7 +106,8 @@ def load_positive_texts(file_path: Path) -> List[str]:
             if not isinstance(text, str) or not text.strip():
                 logger.warning(
                     "%s:%d: empty or non-string text – skipping",
-                    file_path.name, line_num,
+                    file_path.name,
+                    line_num,
                 )
                 continue
 
@@ -124,7 +134,9 @@ def encode_and_save(
     np.save(output_path, embeddings)
     logger.info(
         "  Saved → %s  (shape=%s, dtype=%s)",
-        output_path, embeddings.shape, embeddings.dtype,
+        output_path,
+        embeddings.shape,
+        embeddings.dtype,
     )
 
 
@@ -156,9 +168,7 @@ def main() -> None:
         logger.error("No matching category files to process.")
         sys.exit(1)
 
-    logger.info(
-        "Source   : %s  (%d file(s))", args.source, len(jsonl_files)
-    )
+    logger.info("Source   : %s  (%d file(s))", args.source, len(jsonl_files))
     logger.info("Output   : %s", args.output)
     logger.info("Model    : %s", args.model)
     logger.info("Batch    : %d", args.batch)
@@ -195,7 +205,8 @@ def main() -> None:
     logger.info("")
     logger.info(
         "Done. Successfully processed %d / %d categories.",
-        processed, len(jsonl_files),
+        processed,
+        len(jsonl_files),
     )
 
 

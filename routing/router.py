@@ -1,11 +1,10 @@
 from __future__ import annotations
 
-
 import logging
 import re
 import uuid
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
 from typing import Final
 
@@ -103,7 +102,7 @@ def _make_decision(
 
     decision = RoutingDecision(
         id=uuid.uuid4(),
-        timestamp=datetime.now(timezone.utc),
+        timestamp=datetime.now(UTC),
         rule=rule,
         model=model,
         estimated_tokens=estimated_tokens,
@@ -111,7 +110,10 @@ def _make_decision(
     )
     logger.debug(
         "routing_decision id=%s rule=%s model=%s tokens=%d",
-        decision.id, rule.value, decision.model_name, estimated_tokens,
+        decision.id,
+        rule.value,
+        decision.model_name,
+        estimated_tokens,
     )
     return decision
 
@@ -141,9 +143,7 @@ class RuleBasedRouter:
             self._rules.default.model,
         )
 
-    def _check_long_context(
-        self, estimated_tokens: int
-    ) -> RoutingDecision | None:
+    def _check_long_context(self, estimated_tokens: int) -> RoutingDecision | None:
         if estimated_tokens <= self._token_threshold:
             return None
         model_name = self._rules.long_context.model
@@ -157,9 +157,7 @@ class RuleBasedRouter:
             ],
         )
 
-    def _check_code(
-        self, text: str, estimated_tokens: int
-    ) -> RoutingDecision | None:
+    def _check_code(self, text: str, estimated_tokens: int) -> RoutingDecision | None:
         if not _contains_code(text):
             return None
         model_name = self._rules.code.model
@@ -237,13 +235,17 @@ class RuleBasedRouter:
             self._check_long_context(estimated_tokens)
             or self._check_code(text, estimated_tokens)
             or self._check_enterprise(user_tier, estimated_tokens)
-            or self._check_over_budget(team_daily_spend, team_daily_budget, estimated_tokens)
+            or self._check_over_budget(
+                team_daily_spend, team_daily_budget, estimated_tokens
+            )
             or self._default(estimated_tokens)
         )
 
         logger.info(
             "RuleRouter → rule=%-14s  model=%-25s  tokens=%d",
-            decision.rule.value, decision.model_name, estimated_tokens,
+            decision.rule.value,
+            decision.model_name,
+            estimated_tokens,
         )
         return decision
 

@@ -1,4 +1,4 @@
-name: PR Tests
+name: CI Quality & Tests
 
 on:
   pull_request:
@@ -9,8 +9,33 @@ on:
       - main
 
 jobs:
+  lint:
+    name: Code Quality
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install linter dependencies
+        run: |
+          pip install black ruff
+
+      - name: Check Black formatting
+        run: black --check .
+
+      - name: Run Ruff linter
+        run: ruff check .
+
   test:
     name: Integration & Concurrency Tests
+    needs: lint
     runs-on: ubuntu-latest
 
     services:

@@ -1,21 +1,13 @@
 from __future__ import annotations
 
-"""
-Usage Tracker
-─────────────
-Calculates actual cost from LLM response token counts and writes
-it back to TenantModel.current_spend in the database.
-"""
-
 import logging
 import uuid
 
-from sqlalchemy import select
 from redis import RedisError
+from sqlalchemy import select
 
+from config.settings import CACHE_REGISTRY, ModelConfig
 from db.models import TenantModel
-from config.settings import ModelConfig
-from config.settings import CACHE_REGISTRY
 from db.session import AsyncSessionLocal
 
 logger = logging.getLogger("uvicorn.error")
@@ -57,7 +49,9 @@ def calculate_cost(
     except AttributeError:
         return 0.0
 
-    if not isinstance(raw_input_rate, (int, float)) or not isinstance(raw_output_rate, (int, float)):
+    if not isinstance(raw_input_rate, (int, float)) or not isinstance(
+        raw_output_rate, (int, float)
+    ):
         return 0.0
 
     input_rate = float(raw_input_rate)
@@ -70,8 +64,10 @@ def calculate_cost(
     logger.debug(
         "cost  model=%s  in=%d($%.6f)  out=%d($%.6f)  total=$%.6f",
         model.name,
-        input_tokens, input_cost,
-        output_tokens, output_cost,
+        input_tokens,
+        input_cost,
+        output_tokens,
+        output_cost,
         total,
     )
     return total
@@ -93,16 +89,12 @@ async def record_usage(
             # Any concurrent call hitting the same tenant_id will wait here
             # rather than reading a stale spend value.
             result = await db.execute(
-                select(TenantModel)
-                .where(TenantModel.id == tenant_id)
-                .with_for_update()
+                select(TenantModel).where(TenantModel.id == tenant_id).with_for_update()
             )
             tenant = result.scalar_one_or_none()
 
             if not tenant:
-                logger.error(
-                    "Usage record failed — tenant %s not found.", tenant_id
-                )
+                logger.error("Usage record failed — tenant %s not found.", tenant_id)
                 return
 
             tenant.current_spend = round(tenant.current_spend + cost, 8)
@@ -110,7 +102,10 @@ async def record_usage(
 
             logger.info(
                 "Usage recorded  tenant=%s  model=%s  cost=$%.6f  total=$%.4f",
-                tenant_id, model.name, cost, tenant.current_spend,
+                tenant_id,
+                model.name,
+                cost,
+                tenant.current_spend,
             )
 
         except Exception:

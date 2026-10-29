@@ -1,18 +1,20 @@
 import logging
 import uuid
-from typing import Any, AsyncGenerator, Optional
+from collections.abc import AsyncGenerator
+from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
+
 from gateway.middleware import verify_api_key
 from gateway.usage import (
     calculate_cost,
-    record_usage,
     estimate_request_cost,
-    reserve_budget,
     reconcile_budget_reservation,
+    record_usage,
     release_budget_reservation,
+    reserve_budget,
 )
 from guardrails.deterministic_rule import DeterministicRuleGuard
 from proxy.proxy import Message, ProxyRequest
@@ -31,7 +33,7 @@ class ChatRequest(BaseModel):
     stream: bool = False
     max_tokens: int = Field(default=1024, gt=0, le=8192)
     temperature: float = Field(default=0.7, ge=0.0, le=1.0)
-    system_prompt: Optional[str] = None
+    system_prompt: str | None = None
 
 
 class ChatResponse(BaseModel):
@@ -69,19 +71,18 @@ async def chat(
     8. Record usage cost to DB + reconcile or release Redis reservation hold
     """
     app_state = request.app.state
-    api_key_id, api_key_is_active, tenant_id, tenant_record = auth
+    _, _, tenant_id, tenant_record = auth
 
     # Build input text for guardrails and routing (use the last user message as primary signal)
-    input_text = " ".join(
-        m.content for m in body.messages if m.role == "user"
-    )
+    input_text = " ".join(m.content for m in body.messages if m.role == "user")
 
     det_result = DeterministicRuleGuard(input_text).evaluate()
 
     if det_result.is_blocked:
         logger.warning(
             "Deterministic guard blocked  tenant=%s  findings=%s",
-            tenant_id, det_result.findings,
+            tenant_id,
+            det_result.findings,
         )
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -99,7 +100,8 @@ async def chat(
     if sem_guard_result.is_blocked:
         logger.warning(
             "Semantic guard blocked  tenant=%s  findings=%s",
-            tenant_id, sem_guard_result.findings,
+            tenant_id,
+            sem_guard_result.findings,
         )
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -135,7 +137,9 @@ async def chat(
 
     logger.info(
         "Routing decision  tenant=%s  rule=%s  model=%s",
-        tenant_id, routing_rule, selected_model.name,
+        tenant_id,
+        routing_rule,
+        selected_model.name,
     )
 
     proxy_req = ProxyRequest(
@@ -166,6 +170,7 @@ async def chat(
         )
 
     if body.stream:
+
         async def generate() -> AsyncGenerator[str, None]:
             input_tokens = 0
             output_tokens = 0
@@ -181,9 +186,9 @@ async def chat(
                 yield "data: [DONE]\n\n"
                 stream_completed_successfully = True
 
-            except Exception as exc:
-                logger.error("Streaming error tenant=%s error=%s", tenant_id, str(exc))
-                raise exc
+            except Exception:
+                logger.error("Streaming error tenant=%s error=%s", tenant_id)
+                raise
 
             finally:
                 # Guaranteed execution block (handles normal finish, errors, and asyncio.CancelledError)

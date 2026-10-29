@@ -10,12 +10,12 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics import f1_score, precision_score, recall_score
 
-DEFAULT_RAW_DIR    = Path("data/raw")
-DEFAULT_REF_DIR    = Path("data/references")
-DEFAULT_OUTPUT     = Path("data/thresholds.json")
-DEFAULT_MODEL      = "all-MiniLM-L6-v2"
-DEFAULT_THRESH_MIN  = 0.40
-DEFAULT_THRESH_MAX  = 0.95
+DEFAULT_RAW_DIR = Path("data/raw")
+DEFAULT_REF_DIR = Path("data/references")
+DEFAULT_OUTPUT = Path("data/thresholds.json")
+DEFAULT_MODEL = "all-MiniLM-L6-v2"
+DEFAULT_THRESH_MIN = 0.40
+DEFAULT_THRESH_MAX = 0.95
 DEFAULT_THRESH_STEP = 0.01
 
 logging.basicConfig(
@@ -27,49 +27,65 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Sweep thresholds and find best F1 for any category set.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument(
-        "--raw", type=Path, default=DEFAULT_RAW_DIR,
+        "--raw",
+        type=Path,
+        default=DEFAULT_RAW_DIR,
         help="Directory containing labeled evaluation *.jsonl files.",
     )
     parser.add_argument(
-        "--refs", type=Path, default=DEFAULT_REF_DIR,
+        "--refs",
+        type=Path,
+        default=DEFAULT_REF_DIR,
         help="Directory containing pre-compiled reference *.npy files.",
     )
     parser.add_argument(
-        "--output", type=Path, default=DEFAULT_OUTPUT,
+        "--output",
+        type=Path,
+        default=DEFAULT_OUTPUT,
         help="Path to write the resulting thresholds JSON file.",
     )
     parser.add_argument(
-        "--model", type=str, default=DEFAULT_MODEL,
+        "--model",
+        type=str,
+        default=DEFAULT_MODEL,
         help="SentenceTransformer model name. Must match the one used in build_reference.",
     )
     parser.add_argument(
-        "--thresh-min", type=float, default=DEFAULT_THRESH_MIN,
+        "--thresh-min",
+        type=float,
+        default=DEFAULT_THRESH_MIN,
         help="Lower bound of threshold sweep.",
     )
     parser.add_argument(
-        "--thresh-max", type=float, default=DEFAULT_THRESH_MAX,
+        "--thresh-max",
+        type=float,
+        default=DEFAULT_THRESH_MAX,
         help="Upper bound of threshold sweep.",
     )
     parser.add_argument(
-        "--thresh-step", type=float, default=DEFAULT_THRESH_STEP,
+        "--thresh-step",
+        type=float,
+        default=DEFAULT_THRESH_STEP,
         help="Step size for threshold sweep.",
     )
     parser.add_argument(
-        "--categories", nargs="*", default=None,
+        "--categories",
+        nargs="*",
+        default=None,
         help="Optional whitelist of category names to benchmark. "
-             "If omitted, all *.jsonl files in --raw are processed.",
+        "If omitted, all *.jsonl files in --raw are processed.",
     )
     return parser.parse_args()
 
 
 # ── Core logic (unchanged from original) ─────────────────────────────────────
+
 
 def load_jsonl(path: Path) -> tuple[list[str], list[int]]:
     """Load evaluation texts and binary labels from a JSONL file.
@@ -92,12 +108,16 @@ def load_jsonl(path: Path) -> tuple[list[str], list[int]]:
                 continue
 
             if "text" not in data or "label" not in data:
-                logger.warning("%s:%d – missing 'text' or 'label', skipping", path, lineno)
+                logger.warning(
+                    "%s:%d – missing 'text' or 'label', skipping", path, lineno
+                )
                 continue
 
             text = data["text"]
             if not isinstance(text, str) or not text.strip():
-                logger.warning("%s:%d – empty or non-string text, skipping", path, lineno)
+                logger.warning(
+                    "%s:%d – empty or non-string text, skipping", path, lineno
+                )
                 continue
 
             try:
@@ -107,7 +127,10 @@ def load_jsonl(path: Path) -> tuple[list[str], list[int]]:
             except (TypeError, ValueError) as exc:
                 logger.warning(
                     "%s:%d – invalid label %r: %s",
-                    path, lineno, data.get("label"), exc,
+                    path,
+                    lineno,
+                    data.get("label"),
+                    exc,
                 )
                 continue
 
@@ -202,9 +225,7 @@ def process_category(
 
     pos = sum(labels)
     neg = len(labels) - pos
-    logger.info(
-        "Eval set: %d items (%d positives, %d negatives)", len(texts), pos, neg
-    )
+    logger.info("Eval set: %d items (%d positives, %d negatives)", len(texts), pos, neg)
 
     try:
         eval_embeddings = model.encode(
@@ -222,9 +243,7 @@ def process_category(
     sim_matrix = np.dot(eval_embeddings, ref_embeddings.T)
     max_sims = np.max(sim_matrix, axis=1)
 
-    result = find_best_threshold(
-        max_sims, labels, thresh_min, thresh_max, thresh_step
-    )
+    result = find_best_threshold(max_sims, labels, thresh_min, thresh_max, thresh_step)
 
     logger.info(
         "Best → threshold=%.2f  precision=%.4f  recall=%.4f  f1=%.4f",
@@ -260,7 +279,9 @@ def main() -> int:
         jsonl_files = [f for f in all_jsonl if f.stem in whitelist]
         missing = whitelist - {f.stem for f in jsonl_files}
         if missing:
-            logger.warning("Requested categories not found in --raw: %s", sorted(missing))
+            logger.warning(
+                "Requested categories not found in --raw: %s", sorted(missing)
+            )
     else:
         jsonl_files = all_jsonl
 
@@ -275,7 +296,9 @@ def main() -> int:
     logger.info("Model    : %s", args.model)
     logger.info(
         "Sweep    : %.2f → %.2f  step=%.2f",
-        args.thresh_min, args.thresh_max, args.thresh_step,
+        args.thresh_min,
+        args.thresh_max,
+        args.thresh_step,
     )
     if args.categories:
         logger.info("Filter   : %s", args.categories)

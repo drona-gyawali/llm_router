@@ -1,31 +1,16 @@
 from __future__ import annotations
 
-"""
-Auth Router — Tenant and API Key Management
-────────────────────────────────────────────
-Provides REST endpoints for:
-    POST /auth/tenants          → create a new tenant
-    GET  /auth/tenants/{id}     → get tenant info
-    POST /auth/tenants/{id}/keys → create an API key for a tenant
-    GET  /auth/tenants/{id}/keys → list API keys for a tenant
-    DELETE /auth/keys/{id}      → revoke an API key
-
-These are admin endpoints. In production, protect them with an
-internal admin token. For now they are open for testing.
-"""
-
-from typing import Optional
-import uuid
 import logging
+import uuid
 from datetime import datetime
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from db.models import TenantModel, ApiKeyModel
+from db.models import ApiKeyModel, TenantModel
 from db.session import get_db
 from gateway.auth import generate_api_key
 
@@ -53,7 +38,7 @@ class TenantResponse(BaseModel):
 
 
 class CreateApiKeyRequest(BaseModel):
-    name: Optional[str] = Field(default=None, max_length=100)
+    name: str | None = Field(default=None, max_length=100)
 
 
 class ApiKeyCreatedResponse(BaseModel):
@@ -61,17 +46,19 @@ class ApiKeyCreatedResponse(BaseModel):
     Returned ONCE when a key is created.
     raw_key is never stored — user must save it now.
     """
+
     id: uuid.UUID
-    name: Optional[str]
+    name: str | None
     key_prefix: str
-    raw_key: str                    # ← shown ONCE, never stored
+    raw_key: str  # ← shown ONCE, never stored
     message: str = "Save this key now. It will never be shown again."
 
 
 class ApiKeyResponse(BaseModel):
     """Safe representation — no raw key."""
+
     id: uuid.UUID
-    name: Optional[str]
+    name: str | None
     key_prefix: str
     is_active: bool
     created_at: datetime
@@ -111,12 +98,12 @@ async def create_tenant(
     try:
         await db.commit()
         await db.refresh(tenant)
-    except IntegrityError:
+    except IntegrityError as err:
         await db.rollback()
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Tenant with name '{body.name}' already exists.",
-        )
+        ) from err
 
     logger.info("Tenant created: %s (%s)", tenant.name, tenant.id)
     return TenantResponse.model_validate(tenant)
@@ -141,6 +128,7 @@ async def get_tenant(
 
 
 # ── API Key endpoints ─────────────────────────────────────────────────────────
+
 
 @router.post(
     "/tenants/{tenant_id}/keys",
@@ -187,16 +175,17 @@ async def create_api_key(
     try:
         await db.commit()
         await db.refresh(api_key)
-    except IntegrityError:
+    except IntegrityError as err:
         await db.rollback()
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Key collision, please try again.",
-        )
+        ) from err
 
     logger.info(
         "API key created for tenant %s  prefix=%s",
-        tenant_id, key_prefix,
+        tenant_id,
+        key_prefix,
     )
 
     return ApiKeyCreatedResponse(

@@ -2,12 +2,12 @@ from __future__ import annotations
 
 import os
 import uuid
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 import pytest_asyncio
-from httpx import AsyncClient, ASGITransport
+from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_sessionmaker,
@@ -20,9 +20,7 @@ from db.session import get_db
 from main import app
 
 # ── Test database ──────────────────────────────────────────────────────────────
-TEST_DATABASE_URL = os.environ.get(
-    "DATABASE_URL", "sqlite+aiosqlite:///:memory:"
-)
+TEST_DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite+aiosqlite:///:memory:")
 USING_POSTGRES = TEST_DATABASE_URL.startswith("postgresql")
 
 engine = create_async_engine(
@@ -36,6 +34,7 @@ TestingSessionLocal = async_sessionmaker(
 
 
 # ── Fixtures ───────────────────────────────────────────────────────────────────
+
 
 # scope="module" matches asyncio_default_fixture_loop_scope=module in pytest.ini.
 # "session" is wider than "module" and causes a ScopeMismatch with the module-scoped
@@ -58,6 +57,7 @@ async def client() -> AsyncGenerator[AsyncClient, None]:
     Provides an AsyncClient wired to the test DB.
     Redis is mocked so no real Redis instance is required.
     """
+
     async def override_get_db():
         async with TestingSessionLocal() as session:
             try:
@@ -123,6 +123,7 @@ async def client() -> AsyncGenerator[AsyncClient, None]:
 
 # ── Helper ─────────────────────────────────────────────────────────────────────
 
+
 async def create_tenant_and_key(
     client: AsyncClient,
     name: str = "Acme Corp",
@@ -149,6 +150,7 @@ async def create_tenant_and_key(
 # ══════════════════════════════════════════════════════════════════════════════
 # Tenant Endpoints
 # ══════════════════════════════════════════════════════════════════════════════
+
 
 @pytest.mark.asyncio(loop_scope="module")
 class TestCreateTenant:
@@ -229,6 +231,7 @@ class TestGetTenant:
 # API Key Endpoints
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 @pytest.mark.asyncio(loop_scope="module")
 class TestCreateApiKey:
     async def test_create_key_returns_raw_key_once(self, client: AsyncClient):
@@ -265,7 +268,11 @@ class TestListApiKeys:
     async def test_list_keys_empty_on_new_tenant(self, client: AsyncClient):
         create_resp = await client.post(
             "/auth/tenants",
-            json={"name": "Empty Keys Tenant", "monthly_budget": 10.0, "currency": "USD"},
+            json={
+                "name": "Empty Keys Tenant",
+                "monthly_budget": 10.0,
+                "currency": "USD",
+            },
         )
         tenant_id = create_resp.json()["id"]
         resp = await client.get(f"/auth/tenants/{tenant_id}/keys")
@@ -275,7 +282,11 @@ class TestListApiKeys:
     async def test_list_keys_returns_created_keys(self, client: AsyncClient):
         create_resp = await client.post(
             "/auth/tenants",
-            json={"name": "Multi Key Tenant", "monthly_budget": 10.0, "currency": "USD"},
+            json={
+                "name": "Multi Key Tenant",
+                "monthly_budget": 10.0,
+                "currency": "USD",
+            },
         )
         tenant_id = create_resp.json()["id"]
         for i in range(3):
@@ -330,23 +341,31 @@ class TestRevokeApiKey:
 # Auth Middleware
 # ══════════════════════════════════════════════════════════════════════════════
 
+
 @pytest.mark.asyncio(loop_scope="module")
 class TestAuthMiddleware:
     def _mock_app_state(self, app):
         from routing.router import RoutingRule
+
         sem_result = MagicMock(is_blocked=False, findings=[])
         rule_result = MagicMock()
         rule_result.rule = RoutingRule.DEFAULT
         rule_result.model = MagicMock(name="gpt-4o")
         route_result = MagicMock(model=MagicMock(name="gpt-4o"), category="general")
 
-        app.state.semantic_guard = MagicMock(evaluate=MagicMock(return_value=sem_result))
+        app.state.semantic_guard = MagicMock(
+            evaluate=MagicMock(return_value=sem_result)
+        )
         app.state.rule_router = MagicMock(route=MagicMock(return_value=rule_result))
-        app.state.semantic_router = MagicMock(route=MagicMock(return_value=route_result))
+        app.state.semantic_router = MagicMock(
+            route=MagicMock(return_value=route_result)
+        )
 
         proxy_resp = MagicMock(
-            content="Hello!", model_used="gpt-4o",
-            input_tokens=5, output_tokens=10,
+            content="Hello!",
+            model_used="gpt-4o",
+            input_tokens=5,
+            output_tokens=10,
         )
         app.state.proxy = AsyncMock()
         app.state.proxy.forward = AsyncMock(return_value=proxy_resp)
@@ -383,7 +402,9 @@ class TestAuthMiddleware:
         assert resp.status_code == 403
 
     async def test_revoked_key_returns_403(self, client: AsyncClient):
-        tenant, raw_key = await create_tenant_and_key(client, name="Revoked Auth Tenant")
+        tenant, raw_key = await create_tenant_and_key(
+            client, name="Revoked Auth Tenant"
+        )
         keys_resp = await client.get(f"/auth/tenants/{tenant['id']}/keys")
         key_id = keys_resp.json()[0]["id"]
         await client.delete(f"/auth/keys/{key_id}")

@@ -5,10 +5,9 @@ import os
 import uuid
 from unittest.mock import AsyncMock, MagicMock, patch
 
-
 import pytest
 import pytest_asyncio
-from httpx import AsyncClient, ASGITransport
+from httpx import ASGITransport, AsyncClient
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
@@ -17,14 +16,12 @@ from sqlalchemy.ext.asyncio import (
 )
 from sqlalchemy.pool import NullPool
 
-from db.models import Base, TenantModel, ApiKeyModel
+from db.models import ApiKeyModel, Base, TenantModel
 from db.session import get_db
 from gateway.auth import generate_api_key
 from main import app
 
-TEST_DATABASE_URL = os.environ.get(
-    "DATABASE_URL", "sqlite+aiosqlite:///:memory:"
-)
+TEST_DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite+aiosqlite:///:memory:")
 USING_POSTGRES = TEST_DATABASE_URL.startswith("postgresql")
 
 test_engine = create_async_engine(
@@ -54,6 +51,7 @@ async def client():
     AsyncClient wired to the test DB.
     Each request gets its own session — required for Postgres/asyncpg.
     """
+
     async def override_get_db():
         async with TestingSessionLocal() as session:
             try:
@@ -88,8 +86,8 @@ async def client():
         _script: str,
         _numkeys: int,
         key: str,
-        reservation: str,       # ARGV[1]
-        monthly_budget: str,    # ARGV[2]
+        reservation: str,  # ARGV[1]
+        monthly_budget: str,  # ARGV[2]
     ):
         # The lock makes the entire check-and-increment atomic, exactly as a
         # Redis Lua script is atomic on the server.  Without it, asyncio.gather
@@ -110,10 +108,10 @@ async def client():
 
             updated = float(redis_state[key]) + float(reservation)
             if updated > float(monthly_budget):
-                return 0                    # blocked
+                return 0  # blocked
 
             redis_state[key] = str(updated)
-            return float(reservation)       # accepted
+            return float(reservation)  # accepted
 
     mock_redis = AsyncMock()
     mock_redis.get.side_effect = redis_get
@@ -134,6 +132,7 @@ async def client():
 
 
 # ── Seed helpers ───────────────────────────────────────────────────────────────
+
 
 async def seed_tenant(
     spend: float = 90.0,
@@ -175,17 +174,17 @@ def _mock_app_state():
     rule_result.rule = RoutingRule.DEFAULT
     rule_result.model = MagicMock(name="gpt-4o")
 
-    route_result = MagicMock(
-        model=MagicMock(name="gpt-4o"), category="general"
-    )
+    route_result = MagicMock(model=MagicMock(name="gpt-4o"), category="general")
 
     app.state.semantic_guard = MagicMock(evaluate=MagicMock(return_value=sem_result))
     app.state.rule_router = MagicMock(route=MagicMock(return_value=rule_result))
     app.state.semantic_router = MagicMock(route=MagicMock(return_value=route_result))
 
     proxy_resp = MagicMock(
-        content="ok", model_used="gpt-4o",
-        input_tokens=5, output_tokens=5,
+        content="ok",
+        model_used="gpt-4o",
+        input_tokens=5,
+        output_tokens=5,
     )
     app.state.proxy = AsyncMock()
     app.state.proxy.forward = AsyncMock(return_value=proxy_resp)
@@ -194,9 +193,7 @@ def _mock_app_state():
 @pytest.mark.asyncio(loop_scope="module")
 class TestBudgetRaceCondition:
 
-    async def test_already_at_limit_blocks_immediately(
-        self, client: AsyncClient
-    ):
+    async def test_already_at_limit_blocks_immediately(self, client: AsyncClient):
         """Tenant at exactly the budget limit must be blocked on first request."""
         _mock_app_state()
         _, raw_key = await seed_tenant(spend=100.0, budget=100.0)
@@ -209,9 +206,7 @@ class TestBudgetRaceCondition:
         assert resp.status_code == 429
         assert "budget" in resp.json()["detail"].lower()
 
-    async def test_over_limit_blocks_immediately(
-        self, client: AsyncClient
-    ):
+    async def test_over_limit_blocks_immediately(self, client: AsyncClient):
         """Tenant over budget must also be blocked."""
         _mock_app_state()
         _, raw_key = await seed_tenant(spend=150.0, budget=100.0)
@@ -223,9 +218,7 @@ class TestBudgetRaceCondition:
         )
         assert resp.status_code == 429
 
-    async def test_concurrent_requests_race_condition(
-        self, client: AsyncClient
-    ):
+    async def test_concurrent_requests_race_condition(self, client: AsyncClient):
         """
         Fire 10 simultaneous requests against a tenant with spend=90, budget=100.
         redis_eval is protected by an asyncio.Lock so the check-and-increment is
@@ -243,10 +236,12 @@ class TestBudgetRaceCondition:
             patch("api.chat.reconcile_budget_reservation", new_callable=AsyncMock),
             patch("api.chat.release_budget_reservation", new_callable=AsyncMock),
         ):
-            responses = await asyncio.gather(*[
-                client.post("/chat", headers=headers, json=payload)
-                for _ in range(10)
-            ])
+            responses = await asyncio.gather(
+                *[
+                    client.post("/chat", headers=headers, json=payload)
+                    for _ in range(10)
+                ]
+            )
 
         statuses = [r.status_code for r in responses]
         passed = statuses.count(200)
@@ -277,6 +272,7 @@ class TestBudgetRaceCondition:
 
         async def fake_reconcile(tenant_id, reservation, actual_cost):
             from gateway.usage import CACHE_REGISTRY
+
             await CACHE_REGISTRY.incrbyfloat(budget_key, -(reservation - actual_cost))
 
         with (

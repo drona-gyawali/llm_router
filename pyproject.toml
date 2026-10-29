@@ -1,0 +1,30 @@
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+# This regex tells Black to skip the alembic/versions folder
+exclude = '''
+/(
+    \.git
+    | \.venv
+    | \.env
+    | alembic/versions
+)/
+'''
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+# This tells Ruff to skip the alembic/versions folder
+exclude = ["alembic/versions/*"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B"]
+ignore = [
+    "E501",    # Line length handled by Black formatter
+    "B008",    # Do not perform function calls in argument defaults (Required for FastAPI Depends())
+    "BLE001",  # Do not catch blind exception: Exception (Required for resilient gateway proxy and guardrail error boundaries)
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["gateway", "proxy", "routing", "guardrails", "db", "config", "api"]
