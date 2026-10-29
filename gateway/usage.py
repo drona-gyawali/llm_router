@@ -20,6 +20,25 @@ from db.session import AsyncSessionLocal
 
 logger = logging.getLogger("uvicorn.error")
 
+_RESERVE_BUDGET_SCRIPT = """
+local key = KEYS[1]
+local current_spend = tonumber(ARGV[1])
+local reservation = tonumber(ARGV[2])
+local monthly_budget = tonumber(ARGV[3])
+
+if redis.call("EXISTS", key) == 0 then
+    redis.call("SET", key, current_spend)
+end
+
+local new_spend = tonumber(redis.call("INCRBYFLOAT", key, reservation))
+if new_spend > monthly_budget then
+    redis.call("INCRBYFLOAT", key, -reservation)
+    return 0
+end
+
+return reservation
+"""
+
 
 def calculate_cost(
     input_tokens: int,
@@ -128,16 +147,33 @@ async def reserve_budget(
     budget_key = _budget_key(tenant_id)
 
     try:
-        await CACHE_REGISTRY.setnx(budget_key, current_spend)
-        new_spend = await CACHE_REGISTRY.incrbyfloat(budget_key, reservation)
-
-        if float(new_spend) > monthly_budget:
-            await CACHE_REGISTRY.incrbyfloat(budget_key, -reservation)
-            return 0.0
-        return reservation
+        reserved = await CACHE_REGISTRY.eval(
+            _RESERVE_BUDGET_SCRIPT,
+            1,
+            budget_key,
+            str(current_spend),
+            str(reservation),
+            str(monthly_budget),
+        )
+        return float(reserved)
     except RedisError:
         logger.exception("Redis budget reservation failed for tenant %s", tenant_id)
         return 0.0
+
+
+async def reconcile_budget_reservation(
+    tenant_id: uuid.UUID,
+    reservation: float,
+    actual_cost: float,
+) -> None:
+    delta = float(actual_cost) - float(reservation)
+    if delta == 0.0:
+        return
+
+    try:
+        await CACHE_REGISTRY.incrbyfloat(_budget_key(tenant_id), delta)
+    except RedisError:
+        logger.exception("Redis budget reconciliation failed for tenant %s", tenant_id)
 
 
 async def release_budget_reservation(

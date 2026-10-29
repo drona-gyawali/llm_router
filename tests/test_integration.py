@@ -85,23 +85,28 @@ async def client() -> AsyncGenerator[AsyncClient, None]:
         redis_state[key] = value
         return True
 
-    async def redis_setnx(key: str, value: float):
-        if key in redis_state:
-            return False
-        redis_state[key] = str(value)
-        return True
-
     async def redis_incrbyfloat(key: str, amount: float):
         current = float(redis_state.get(key, "0.0"))
         updated = current + float(amount)
         redis_state[key] = str(updated)
         return updated
 
+    async def redis_eval(_script: str, _numkeys: int, key: str, current_spend: str, reservation: str, monthly_budget: str):
+        if key not in redis_state:
+            redis_state[key] = str(float(current_spend))
+
+        updated = float(redis_state[key]) + float(reservation)
+        if updated > float(monthly_budget):
+            return 0.0
+
+        redis_state[key] = str(updated)
+        return float(reservation)
+
     mock_redis = AsyncMock()
     mock_redis.get.side_effect = redis_get
     mock_redis.setex.side_effect = redis_setex
-    mock_redis.setnx.side_effect = redis_setnx
     mock_redis.incrbyfloat.side_effect = redis_incrbyfloat
+    mock_redis.eval.side_effect = redis_eval
 
     with patch("gateway.auth.CACHE_REGISTRY", mock_redis), patch("gateway.usage.CACHE_REGISTRY", mock_redis):
         async with AsyncClient(

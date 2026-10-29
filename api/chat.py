@@ -9,9 +9,11 @@ from pydantic import BaseModel, Field
 from db.session import get_db
 from gateway.middleware import verify_api_key
 from gateway.usage import (
+    calculate_cost,
     record_usage,
     estimate_request_cost,
     reserve_budget,
+    reconcile_budget_reservation,
     release_budget_reservation,
 )
 from guardrails.deterministic_rule import DeterministicRuleGuard
@@ -195,6 +197,16 @@ async def chat(
         input_tokens=response.input_tokens,
         output_tokens=response.output_tokens,
         model=selected_model,
+    )
+    actual_cost = calculate_cost(
+        input_tokens=response.input_tokens,
+        output_tokens=response.output_tokens,
+        model=selected_model,
+    )
+    await reconcile_budget_reservation(
+        tenant_id=tenant_id,
+        reservation=reserved_amount,
+        actual_cost=actual_cost,
     )
 
     return ChatResponse(
