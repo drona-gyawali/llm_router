@@ -59,12 +59,13 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install psycopg2-binary
+          pip install psycopg2-binary  # needed by alembic env.py (sync driver)
 
-      - name: Restore thresholds file
+      - name: Restore thresholds files
         run: |
-          mkdir -p data
+          mkdir -p data/routing
           echo '${{ secrets.THRESHOLDS_JSON }}' > data/thresholds.json
+          echo '${{ secrets.ROUTING_THRESHOLDS_JSON }}' > data/routing/thresholds.json
 
       - name: Run Alembic migrations
         run: alembic upgrade head
