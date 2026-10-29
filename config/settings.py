@@ -158,21 +158,21 @@ MODEL_REGISTRY, ROUTING_CONFIG = load_config()
 
 
 class EnvConfig(BaseModel):
-    DATABASE_URL:str
+    DATABASE_URL: str = "sqlite+aiosqlite:///:memory:"
     WEB_PORT:str
     REDIS_HOST:str
     REDIS_PORT:int
 
-def clean_env(value: Optional[str], prefix: str) -> Optional[str]:
+def clean_env(value: Optional[str], prefix: str, default: str = "") -> Optional[str]:
     if not value:
-        return None
+        return default
     # Strip spaces, remove the "VARIABLE_NAME=" prefix if present, and strip again
     return value.strip().removeprefix(f"{prefix}=").strip()
 
 def import_env_config() -> dict[str, EnvConfig]:
 
     config_data = {
-        "DATABASE_URL": clean_env(os.getenv("DATABASE_URL"), "DATABASE_URL"),
+        "DATABASE_URL": clean_env(os.getenv("DATABASE_URL"), "DATABASE_URL", default="sqlite+aiosqlite:///:memory:"),
         "WEB_PORT"    : clean_env(os.getenv("WEB_PORT"), "WEB_PORT"),
         "REDIS_HOST"  : clean_env(os.getenv("REDIS_HOST"), "REDIS_HOST"),
         "REDIS_PORT"  : clean_env(os.getenv("REDIS_PORT"), "REDIS_PORT")

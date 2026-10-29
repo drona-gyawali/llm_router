@@ -1,19 +1,5 @@
 from __future__ import annotations
 
-"""
-Generic LLM Proxy Engine
-─────────────────────────
-One engine handles every provider.
-All provider-specific behaviour comes from api_schema in models.yaml.
-
-To add a new provider:
-    1. Add model entry with api_schema in models.yaml
-    2. Zero Python changes needed here
-
-DRY principle enforced:
-    Before: 9 functions (3 per provider × 3 providers)
-    After:  3 generic functions that read behaviour from config
-"""
 
 import json
 import logging

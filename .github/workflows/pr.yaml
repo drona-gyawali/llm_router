@@ -1,0 +1,77 @@
+name: PR Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Integration & Concurrency Tests
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: secretpassword
+          POSTGRES_DB: mydatabase
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql+asyncpg://postgres:secretpassword@localhost:5432/mydatabase
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
+      WEB_PORT: 8080
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install psycopg2-binary  # needed by alembic env.py (sync driver)
+
+      - name: Restore thresholds files
+        run: |
+          mkdir -p data/routing
+          echo '${{ secrets.THRESHOLDS_JSON }}' > data/thresholds.json
+          echo '${{ secrets.ROUTING_THRESHOLDS_JSON }}' > data/routing/thresholds.json
+
+      - name: Run Alembic migrations
+        run: alembic upgrade head
+
+      - name: Run integration tests
+        run: pytest tests/test_integration.py -v --tb=short
+
+      - name: Run concurrency tests
+        run: pytest tests/test_cost_track.py -v -s --tb=short

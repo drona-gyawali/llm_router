@@ -1,14 +1,5 @@
 from __future__ import annotations
 
-"""
-Semantic Routing Engine (config-driven)
-────────────────────────────────────────
-All category → model mappings come from models.yaml via ROUTING_CONFIG.
-No model names are hardcoded here.
-
-To change which model handles a category → edit models.yaml routing.categories only.
-"""
-
 import json
 import logging
 import uuid
