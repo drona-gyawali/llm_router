@@ -22,15 +22,18 @@ logger = logging.getLogger("uvicorn.error")
 
 _RESERVE_BUDGET_SCRIPT = """
 local key = KEYS[1]
-local current_spend = tonumber(ARGV[1])
-local reservation = tonumber(ARGV[2])
-local monthly_budget = tonumber(ARGV[3])
+local reservation = tonumber(ARGV[1])
+local monthly_budget = tonumber(ARGV[2])
 
+-- Initialize key to 0 if it doesn't exist yet
 if redis.call("EXISTS", key) == 0 then
-    redis.call("SET", key, current_spend)
+    redis.call("SET", key, 0)
 end
 
+-- Atomically add the reservation to the live Redis counter
 local new_spend = tonumber(redis.call("INCRBYFLOAT", key, reservation))
+
+-- If adding this reservation exceeds the monthly budget, roll it back and block
 if new_spend > monthly_budget then
     redis.call("INCRBYFLOAT", key, -reservation)
     return 0
@@ -151,7 +154,6 @@ async def reserve_budget(
             _RESERVE_BUDGET_SCRIPT,
             1,
             budget_key,
-            str(current_spend),
             str(reservation),
             str(monthly_budget),
         )

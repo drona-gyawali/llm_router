@@ -2,10 +2,8 @@ from __future__ import annotations
 
 import os
 import uuid
-import json
 from typing import AsyncGenerator
 from unittest.mock import AsyncMock, MagicMock, patch
-
 
 import pytest
 import pytest_asyncio
@@ -17,20 +15,16 @@ from sqlalchemy.ext.asyncio import (
 )
 from sqlalchemy.pool import NullPool
 
-# ── Project imports ────────────────────────────────────────────────────────────
 from db.models import Base
 from db.session import get_db
 from main import app
 
 # ── Test database ──────────────────────────────────────────────────────────────
-# Uses Postgres in CI (DATABASE_URL set), SQLite locally as fallback.
 TEST_DATABASE_URL = os.environ.get(
     "DATABASE_URL", "sqlite+aiosqlite:///:memory:"
 )
 USING_POSTGRES = TEST_DATABASE_URL.startswith("postgresql")
 
-# NullPool disables connection reuse — each session gets a fresh connection.
-# This is required for asyncpg in tests to avoid "another operation in progress".
 engine = create_async_engine(
     TEST_DATABASE_URL,
     echo=False,
@@ -43,11 +37,13 @@ TestingSessionLocal = async_sessionmaker(
 
 # ── Fixtures ───────────────────────────────────────────────────────────────────
 
-@pytest_asyncio.fixture(scope="session", autouse=True)
+# scope="module" matches asyncio_default_fixture_loop_scope=module in pytest.ini.
+# "session" is wider than "module" and causes a ScopeMismatch with the module-scoped
+# event loop that pytest-asyncio creates — so we use "module" here too.
+@pytest_asyncio.fixture(scope="module", autouse=True, loop_scope="module")
 async def create_tables():
-    """Create all tables once for the test session."""
+    """Create all tables once per test module."""
     if not USING_POSTGRES:
-        # Postgres uses alembic migrations; SQLite needs explicit create
         async with engine.begin() as conn:
             await conn.run_sync(Base.metadata.create_all)
     yield
@@ -56,16 +52,13 @@ async def create_tables():
             await conn.run_sync(Base.metadata.drop_all)
 
 
-@pytest_asyncio.fixture()
+@pytest_asyncio.fixture(loop_scope="module")
 async def client() -> AsyncGenerator[AsyncClient, None]:
     """
     Provides an AsyncClient wired to the test DB.
-    Each test gets its own session to avoid asyncpg concurrency issues.
-    Redis is mocked out so no real Redis is required.
+    Redis is mocked so no real Redis instance is required.
     """
-
     async def override_get_db():
-        # Fresh session per request — required for Postgres/asyncpg
         async with TestingSessionLocal() as session:
             try:
                 yield session
@@ -91,9 +84,17 @@ async def client() -> AsyncGenerator[AsyncClient, None]:
         redis_state[key] = str(updated)
         return updated
 
-    async def redis_eval(_script: str, _numkeys: int, key: str, current_spend: str, reservation: str, monthly_budget: str):
+    # Matches the updated Lua script: ARGV[1]=reservation, ARGV[2]=monthly_budget
+    # (current_spend was removed from the script in the recent diff)
+    async def redis_eval(
+        _script: str,
+        _numkeys: int,
+        key: str,
+        reservation: str,
+        monthly_budget: str,
+    ):
         if key not in redis_state:
-            redis_state[key] = str(float(current_spend))
+            redis_state[key] = "0"
 
         updated = float(redis_state[key]) + float(reservation)
         if updated > float(monthly_budget):
@@ -108,7 +109,10 @@ async def client() -> AsyncGenerator[AsyncClient, None]:
     mock_redis.incrbyfloat.side_effect = redis_incrbyfloat
     mock_redis.eval.side_effect = redis_eval
 
-    with patch("gateway.auth.CACHE_REGISTRY", mock_redis), patch("gateway.usage.CACHE_REGISTRY", mock_redis):
+    with (
+        patch("gateway.auth.CACHE_REGISTRY", mock_redis),
+        patch("gateway.usage.CACHE_REGISTRY", mock_redis),
+    ):
         async with AsyncClient(
             transport=ASGITransport(app=app), base_url="http://test"
         ) as ac:
@@ -124,9 +128,7 @@ async def create_tenant_and_key(
     name: str = "Acme Corp",
     budget: float = 100.0,
 ) -> tuple[dict, str]:
-    """
-    Creates a tenant and one API key; returns (tenant_json, raw_key).
-    """
+    """Creates a tenant and one API key; returns (tenant_json, raw_key)."""
     tenant_resp = await client.post(
         "/auth/tenants",
         json={"name": name, "monthly_budget": budget, "currency": "USD"},
@@ -148,6 +150,7 @@ async def create_tenant_and_key(
 # Tenant Endpoints
 # ══════════════════════════════════════════════════════════════════════════════
 
+@pytest.mark.asyncio(loop_scope="module")
 class TestCreateTenant:
     async def test_create_tenant_success(self, client: AsyncClient):
         resp = await client.post(
@@ -200,6 +203,7 @@ class TestCreateTenant:
         assert resp.status_code == 422
 
 
+@pytest.mark.asyncio(loop_scope="module")
 class TestGetTenant:
     async def test_get_tenant_success(self, client: AsyncClient):
         create_resp = await client.post(
@@ -225,10 +229,10 @@ class TestGetTenant:
 # API Key Endpoints
 # ══════════════════════════════════════════════════════════════════════════════
 
+@pytest.mark.asyncio(loop_scope="module")
 class TestCreateApiKey:
     async def test_create_key_returns_raw_key_once(self, client: AsyncClient):
         tenant, _ = await create_tenant_and_key(client, name="Key Owner")
-        # The raw_key must start with the gateway prefix
         key_resp = await client.post(
             f"/auth/tenants/{tenant['id']}/keys",
             json={"name": "second-key"},
@@ -236,7 +240,7 @@ class TestCreateApiKey:
         data = key_resp.json()
         assert data["raw_key"].startswith("gw_live_")
         assert data["key_prefix"] == data["raw_key"][:12]
-        assert "message" in data       # "Save this key now" notice
+        assert "message" in data
 
     async def test_create_key_for_unknown_tenant_returns_404(self, client: AsyncClient):
         resp = await client.post(
@@ -256,6 +260,7 @@ class TestCreateApiKey:
         assert resp.json()["name"] is None
 
 
+@pytest.mark.asyncio(loop_scope="module")
 class TestListApiKeys:
     async def test_list_keys_empty_on_new_tenant(self, client: AsyncClient):
         create_resp = await client.post(
@@ -263,7 +268,6 @@ class TestListApiKeys:
             json={"name": "Empty Keys Tenant", "monthly_budget": 10.0, "currency": "USD"},
         )
         tenant_id = create_resp.json()["id"]
-
         resp = await client.get(f"/auth/tenants/{tenant_id}/keys")
         assert resp.status_code == 200
         assert resp.json() == []
@@ -274,12 +278,10 @@ class TestListApiKeys:
             json={"name": "Multi Key Tenant", "monthly_budget": 10.0, "currency": "USD"},
         )
         tenant_id = create_resp.json()["id"]
-
         for i in range(3):
             await client.post(
                 f"/auth/tenants/{tenant_id}/keys", json={"name": f"key-{i}"}
             )
-
         resp = await client.get(f"/auth/tenants/{tenant_id}/keys")
         assert resp.status_code == 200
         assert len(resp.json()) == 3
@@ -296,6 +298,7 @@ class TestListApiKeys:
         assert resp.status_code == 404
 
 
+@pytest.mark.asyncio(loop_scope="module")
 class TestRevokeApiKey:
     async def test_revoke_key_success(self, client: AsyncClient):
         tenant, _ = await create_tenant_and_key(client, name="Revoke Tenant")
@@ -312,7 +315,6 @@ class TestRevokeApiKey:
         tenant, _ = await create_tenant_and_key(client, name="Inactive Key Tenant")
         keys_resp = await client.get(f"/auth/tenants/{tenant['id']}/keys")
         key_id = keys_resp.json()[0]["id"]
-
         await client.delete(f"/auth/keys/{key_id}")
 
         keys_after = await client.get(f"/auth/tenants/{tenant['id']}/keys")
@@ -325,22 +327,17 @@ class TestRevokeApiKey:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Auth Middleware (verify_api_key)
+# Auth Middleware
 # ══════════════════════════════════════════════════════════════════════════════
 
+@pytest.mark.asyncio(loop_scope="module")
 class TestAuthMiddleware:
-    """
-    These tests hit /chat which is gated by verify_api_key.
-    We mock out app_state (guardrails / router / proxy) so the test
-    focuses purely on the auth layer.
-    """
-
     def _mock_app_state(self, app):
-        """Attach minimal fake app state so the chat handler doesn't crash."""
-        det_result = MagicMock(is_blocked=False, content="hello", findings=[])
+        from routing.router import RoutingRule
         sem_result = MagicMock(is_blocked=False, findings=[])
         rule_result = MagicMock()
-        rule_result.rule.value = "RULE_A"
+        rule_result.rule = RoutingRule.DEFAULT
+        rule_result.model = MagicMock(name="gpt-4o")
         route_result = MagicMock(model=MagicMock(name="gpt-4o"), category="general")
 
         app.state.semantic_guard = MagicMock(evaluate=MagicMock(return_value=sem_result))
@@ -358,7 +355,11 @@ class TestAuthMiddleware:
         self._mock_app_state(app)
         _, raw_key = await create_tenant_and_key(client, name="Valid Auth Tenant")
 
-        with patch("api.chat.record_usage", new_callable=AsyncMock):
+        with (
+            patch("api.chat.record_usage", new_callable=AsyncMock),
+            patch("api.chat.reconcile_budget_reservation", new_callable=AsyncMock),
+            patch("api.chat.release_budget_reservation", new_callable=AsyncMock),
+        ):
             resp = await client.post(
                 "/chat",
                 headers={"X-API-KEY": raw_key},
@@ -395,19 +396,14 @@ class TestAuthMiddleware:
         assert resp.status_code == 403
 
     async def test_budget_exceeded_returns_429(self, client: AsyncClient):
-        """
-        Create a tenant whose current_spend already equals monthly_budget.
-        We do this by patching verify_hash to return an over-budget tenant record.
-        """
         from gateway.auth import CachedTenantRecord
 
         over_budget_record = CachedTenantRecord(
             id=uuid.uuid4(),
             is_active=True,
             monthly_budget=10.0,
-            current_spend=10.0,   # exactly at limit
+            current_spend=10.0,
         )
-
         key_id = uuid.uuid4()
         tenant_id = over_budget_record.id
 
@@ -426,6 +422,7 @@ class TestAuthMiddleware:
         assert "budget" in resp.json()["detail"].lower()
 
 
+@pytest.mark.asyncio(loop_scope="module")
 class TestHealth:
     async def test_health_returns_ok(self, client: AsyncClient):
         resp = await client.get("/health")
