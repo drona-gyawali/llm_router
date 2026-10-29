@@ -1,19 +1,22 @@
 import logging
 import uuid
-from contextlib import asynccontextmanager
 from typing import Any, AsyncGenerator, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
-import asyncio
-from db.session import get_db
 from gateway.middleware import verify_api_key
-from gateway.usage import record_usage
+from gateway.usage import (
+    calculate_cost,
+    record_usage,
+    estimate_request_cost,
+    reserve_budget,
+    reconcile_budget_reservation,
+    release_budget_reservation,
+)
 from guardrails.deterministic_rule import DeterministicRuleGuard
 from proxy.proxy import Message, ProxyRequest
 from routing.router import RoutingRule, UserTier
-from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -61,8 +64,9 @@ async def chat(
     3. Semantic guardrail
     4. Rule-based routing
     5. Semantic routing (if no hard rule matched)
-    6. Forward to upstream LLM
-    7. Record usage cost to DB
+    6. Budget reservation (atomic, via Redis Lua script)
+    7. Forward to upstream LLM (streaming or non-streaming)
+    8. Record usage cost to DB + reconcile or release Redis reservation hold
     """
     app_state = request.app.state
     api_key_id, api_key_is_active, tenant_id, tenant_record = auth
@@ -143,11 +147,69 @@ async def chat(
         system_prompt=body.system_prompt,
     )
 
+    # Pre-flight cost estimation & atomic budget reservation for BOTH paths
+    estimated_cost = estimate_request_cost(
+        input_text=safe_text,
+        max_tokens=body.max_tokens,
+        model=selected_model,
+    )
+    reserved_amount = await reserve_budget(
+        tenant_id=tenant_id,
+        current_spend=tenant_record.current_spend,
+        monthly_budget=tenant_record.monthly_budget,
+        estimated_cost=estimated_cost,
+    )
+    if reserved_amount <= 0.0:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail=f"Monthly budget limit reached for organization: {tenant_record.id}.",
+        )
+
     if body.stream:
         async def generate() -> AsyncGenerator[str, None]:
-            async for chunk in app_state.proxy.stream(proxy_req):
-                yield f"data: {chunk}\n\n"
-            yield "data: [DONE]\n\n"
+            input_tokens = 0
+            output_tokens = 0
+            stream_completed_successfully = False
+
+            try:
+                async for chunk in app_state.proxy.stream(proxy_req):
+                    if hasattr(chunk, "input_tokens") and chunk.input_tokens:
+                        input_tokens = chunk.input_tokens
+                    if hasattr(chunk, "output_tokens") and chunk.output_tokens:
+                        output_tokens = chunk.output_tokens
+                        yield f"data: {chunk}\n\n"
+                yield "data: [DONE]\n\n"
+                stream_completed_successfully = True
+
+            except Exception as exc:
+                logger.error("Streaming error tenant=%s error=%s", tenant_id, str(exc))
+                raise exc
+
+            finally:
+                # Guaranteed execution block (handles normal finish, errors, and asyncio.CancelledError)
+                if stream_completed_successfully:
+                    await record_usage(
+                        tenant_id=tenant_id,
+                        input_tokens=input_tokens,
+                        output_tokens=output_tokens,
+                        model=selected_model,
+                    )
+                    actual_cost = calculate_cost(
+                        input_tokens=input_tokens,
+                        output_tokens=output_tokens,
+                        model=selected_model,
+                    )
+                    await reconcile_budget_reservation(
+                        tenant_id=tenant_id,
+                        reservation=reserved_amount,
+                        actual_cost=actual_cost,
+                    )
+                else:
+                    # Client disconnected mid-stream or request failed — release the hold immediately
+                    await release_budget_reservation(
+                        tenant_id=tenant_id,
+                        reservation=reserved_amount,
+                    )
 
         return StreamingResponse(
             generate(),
@@ -159,15 +221,32 @@ async def chat(
             },
         )
 
-    # Non-streaming
-    response = await app_state.proxy.forward(proxy_req)
+    # Non-streaming path
+    try:
+        response = await app_state.proxy.forward(proxy_req)
+    except Exception:
+        await release_budget_reservation(
+            tenant_id=tenant_id,
+            reservation=reserved_amount,
+        )
+        raise
 
-    asyncio.create_task(record_usage(
+    await record_usage(
         tenant_id=tenant_id,
         input_tokens=response.input_tokens,
         output_tokens=response.output_tokens,
         model=selected_model,
-    ))
+    )
+    actual_cost = calculate_cost(
+        input_tokens=response.input_tokens,
+        output_tokens=response.output_tokens,
+        model=selected_model,
+    )
+    await reconcile_budget_reservation(
+        tenant_id=tenant_id,
+        reservation=reserved_amount,
+        actual_cost=actual_cost,
+    )
 
     return ChatResponse(
         id=str(uuid.uuid4()),
