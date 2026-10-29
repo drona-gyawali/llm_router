@@ -27,18 +27,11 @@ async def verify_api_key(api_key: str = Security(api_key_header), db: AsyncSessi
                 detail="Account currently not active"
             )
 
-    if tenant_record.current_spend >= tenant_record.monthly_budget:
-        raise HTTPException(
-            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
-            detail=f"Monthly budget limit reached for organization: {tenant_record.id}."
-        )
-
     return (
         api_key_id,
         api_key_is_active, 
         api_key_tenant_id, 
         tenant_record 
     )
-
 
 

@@ -76,11 +76,34 @@ async def client() -> AsyncGenerator[AsyncClient, None]:
 
     app.dependency_overrides[get_db] = override_get_db
 
-    mock_redis = AsyncMock()
-    mock_redis.get.return_value = None
-    mock_redis.setex.return_value = True
+    redis_state: dict[str, str] = {}
 
-    with patch("gateway.auth.CACHE_REGISTRY", mock_redis):
+    async def redis_get(key: str):
+        return redis_state.get(key)
+
+    async def redis_setex(key: str, _ttl: int, value: str):
+        redis_state[key] = value
+        return True
+
+    async def redis_setnx(key: str, value: float):
+        if key in redis_state:
+            return False
+        redis_state[key] = str(value)
+        return True
+
+    async def redis_incrbyfloat(key: str, amount: float):
+        current = float(redis_state.get(key, "0.0"))
+        updated = current + float(amount)
+        redis_state[key] = str(updated)
+        return updated
+
+    mock_redis = AsyncMock()
+    mock_redis.get.side_effect = redis_get
+    mock_redis.setex.side_effect = redis_setex
+    mock_redis.setnx.side_effect = redis_setnx
+    mock_redis.incrbyfloat.side_effect = redis_incrbyfloat
+
+    with patch("gateway.auth.CACHE_REGISTRY", mock_redis), patch("gateway.usage.CACHE_REGISTRY", mock_redis):
         async with AsyncClient(
             transport=ASGITransport(app=app), base_url="http://test"
         ) as ac:
@@ -330,7 +353,7 @@ class TestAuthMiddleware:
         self._mock_app_state(app)
         _, raw_key = await create_tenant_and_key(client, name="Valid Auth Tenant")
 
-        with patch("gateway.usage.record_usage", new_callable=AsyncMock):
+        with patch("api.chat.record_usage", new_callable=AsyncMock):
             resp = await client.post(
                 "/chat",
                 headers={"X-API-KEY": raw_key},

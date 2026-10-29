@@ -6,10 +6,14 @@ from typing import Any, AsyncGenerator, Optional
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
-import asyncio
 from db.session import get_db
 from gateway.middleware import verify_api_key
-from gateway.usage import record_usage
+from gateway.usage import (
+    record_usage,
+    estimate_request_cost,
+    reserve_budget,
+    release_budget_reservation,
+)
 from guardrails.deterministic_rule import DeterministicRuleGuard
 from proxy.proxy import Message, ProxyRequest
 from routing.router import RoutingRule, UserTier
@@ -159,15 +163,39 @@ async def chat(
             },
         )
 
-    # Non-streaming
-    response = await app_state.proxy.forward(proxy_req)
+    estimated_cost = estimate_request_cost(
+        input_text=safe_text,
+        max_tokens=body.max_tokens,
+        model=selected_model,
+    )
+    reserved_amount = await reserve_budget(
+        tenant_id=tenant_id,
+        current_spend=tenant_record.current_spend,
+        monthly_budget=tenant_record.monthly_budget,
+        estimated_cost=estimated_cost,
+    )
+    if reserved_amount <= 0.0:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail=f"Monthly budget limit reached for organization: {tenant_record.id}.",
+        )
 
-    asyncio.create_task(record_usage(
+    # Non-streaming
+    try:
+        response = await app_state.proxy.forward(proxy_req)
+    except Exception:
+        await release_budget_reservation(
+            tenant_id=tenant_id,
+            reservation=reserved_amount,
+        )
+        raise
+
+    await record_usage(
         tenant_id=tenant_id,
         input_tokens=response.input_tokens,
         output_tokens=response.output_tokens,
         model=selected_model,
-    ))
+    )
 
     return ChatResponse(
         id=str(uuid.uuid4()),

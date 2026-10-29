@@ -66,11 +66,34 @@ async def client():
 
     app.dependency_overrides[get_db] = override_get_db
 
-    mock_redis = AsyncMock()
-    mock_redis.get.return_value = None
-    mock_redis.setex.return_value = True
+    redis_state: dict[str, str] = {}
 
-    with patch("gateway.auth.CACHE_REGISTRY", mock_redis):
+    async def redis_get(key: str):
+        return redis_state.get(key)
+
+    async def redis_setex(key: str, _ttl: int, value: str):
+        redis_state[key] = value
+        return True
+
+    async def redis_setnx(key: str, value: float):
+        if key in redis_state:
+            return False
+        redis_state[key] = str(value)
+        return True
+
+    async def redis_incrbyfloat(key: str, amount: float):
+        current = float(redis_state.get(key, "0.0"))
+        updated = current + float(amount)
+        redis_state[key] = str(updated)
+        return updated
+
+    mock_redis = AsyncMock()
+    mock_redis.get.side_effect = redis_get
+    mock_redis.setex.side_effect = redis_setex
+    mock_redis.setnx.side_effect = redis_setnx
+    mock_redis.incrbyfloat.side_effect = redis_incrbyfloat
+
+    with patch("gateway.auth.CACHE_REGISTRY", mock_redis), patch("gateway.usage.CACHE_REGISTRY", mock_redis):
         async with AsyncClient(
             transport=ASGITransport(app=app), base_url="http://test"
         ) as ac:
@@ -144,6 +167,7 @@ class TestBudgetRaceCondition:
         self, client: AsyncClient
     ):
         """Tenant at exactly the budget limit must be blocked on first request."""
+        _mock_app_state()
         _, raw_key = await seed_tenant(spend=100.0, budget=100.0)
 
         resp = await client.post(
@@ -158,6 +182,7 @@ class TestBudgetRaceCondition:
         self, client: AsyncClient
     ):
         """Tenant over budget must also be blocked."""
+        _mock_app_state()
         _, raw_key = await seed_tenant(spend=150.0, budget=100.0)
 
         resp = await client.post(
@@ -172,13 +197,8 @@ class TestBudgetRaceCondition:
     ):
         """
         Fire 10 simultaneous requests against a tenant with spend=90, budget=100.
-
-        CURRENT EXPECTED RESULT (bug present):
-            All 10 pass — because verify_api_key reads spend before
-            record_usage writes it back, so all 10 see spend=90 < 100.
-
-        AFTER FIX (SELECT FOR UPDATE in record_usage):
-            Only 1 should pass. Flip the assert at the bottom once fixed.
+        Budget reservation is atomic, so only one request can consume
+        the remaining budget under concurrency.
         """
         _mock_app_state()
         _, raw_key = await seed_tenant(spend=90.0, budget=100.0)
@@ -186,7 +206,7 @@ class TestBudgetRaceCondition:
         payload = {"messages": [{"role": "user", "content": "Hello"}]}
         headers = {"X-API-KEY": raw_key}
 
-        with patch("gateway.usage.record_usage", new_callable=AsyncMock):
+        with patch("api.chat.record_usage", new_callable=AsyncMock):
             responses = await asyncio.gather(*[
                 client.post("/chat", headers=headers, json=payload)
                 for _ in range(10)
@@ -198,14 +218,5 @@ class TestBudgetRaceCondition:
 
         print(f"\n  Concurrent: {passed} passed, {blocked} blocked out of 10")
 
-        import warnings
-        if passed > 1:
-            warnings.warn(
-                f"KNOWN RACE CONDITION: {passed}/10 concurrent requests passed "
-                f"the budget gate. The pre-flight check in verify_api_key is not "
-                f"atomic — fix requires SELECT FOR UPDATE in record_usage() to be "
-                f"wired into the request path, not just called as a background task.",
-                stacklevel=2,
-            )
-        # At minimum one request must pass (proves auth works at all)
-        assert passed > 0, "No requests passed — auth is completely broken"
+        assert passed == 1
+        assert blocked == 9
