@@ -57,7 +57,14 @@ jobs:
           cache: "pip"
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements.txt
+          pip install psycopg2-binary
+
+      - name: Restore thresholds file
+        run: |
+          mkdir -p data
+          echo '${{ secrets.THRESHOLDS_JSON }}' > data/thresholds.json
 
       - name: Run Alembic migrations
         run: alembic upgrade head
