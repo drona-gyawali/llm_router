@@ -1,15 +1,15 @@
 from __future__ import annotations
 
-
 import json
 import logging
 import os
-from dataclasses import dataclass, field
-from typing import Any, AsyncGenerator
+from collections.abc import AsyncGenerator
+from dataclasses import dataclass
+from typing import Any
 
 import httpx
 
-from config.settings import MODEL_REGISTRY, ModelConfig, ApiSchema
+from config.settings import MODEL_REGISTRY, ApiSchema, ModelConfig
 
 logger = logging.getLogger(__name__)
 
@@ -81,6 +81,7 @@ _TEMPLATE_VARS = {
     "{{system}}",
 }
 
+
 def _render_template(
     template: dict[str, Any],
     values: dict[str, Any],
@@ -151,9 +152,7 @@ def _format_messages(
                 )
             else:
                 # No user message to prepend to — add as user message
-                prefixed_messages.insert(
-                    0, Message(role="user", content=prefix)
-                )
+                prefixed_messages.insert(0, Message(role="user", content=prefix))
             messages = prefixed_messages
 
         # "field" → system goes into body via {{system}} template var, not here
@@ -163,18 +162,21 @@ def _format_messages(
         role = schema.role_map.get(msg.role, msg.role)
 
         if schema.messages_wrapper == "parts":
-            formatted.append({
-                "role": role,
-                "parts": [{"text": msg.content}],
-            })
+            formatted.append(
+                {
+                    "role": role,
+                    "parts": [{"text": msg.content}],
+                }
+            )
         else:
-            formatted.append({
-                "role": role,
-                "content": msg.content,
-            })
+            formatted.append(
+                {
+                    "role": role,
+                    "content": msg.content,
+                }
+            )
 
     return formatted
-
 
 
 def _build_request(
@@ -199,24 +201,24 @@ def _build_request(
         key_value = f"{schema.auth_scheme} {api_key}" if schema.auth_scheme else api_key
         headers[schema.auth_header] = key_value
 
-    formatted_messages = _format_messages(
-        req.messages, req.system_prompt, schema
-    )
+    formatted_messages = _format_messages(req.messages, req.system_prompt, schema)
 
     template_values: dict[str, Any] = {
-        "model_id":    model.model_id,
-        "messages":    formatted_messages,
-        "max_tokens":  req.max_tokens,
+        "model_id": model.model_id,
+        "messages": formatted_messages,
+        "max_tokens": req.max_tokens,
         "temperature": req.temperature,
-        "stream":      req.stream,
-        "system":      req.system_prompt,
+        "stream": req.stream,
+        "system": req.system_prompt,
     }
 
     body = _render_template(schema.body_template, template_values)
 
     logger.debug(
         "Built request  provider=%s  url=%s  messages=%d",
-        model.provider, url, len(formatted_messages),
+        model.provider,
+        url,
+        len(formatted_messages),
     )
     return url, headers, body
 
@@ -257,7 +259,7 @@ async def _parse_stream(
         if not line.startswith(prefix):
             continue
 
-        payload = line[len(prefix):]
+        payload = line[len(prefix) :]
 
         if done_signal and payload == done_signal:
             break
@@ -319,24 +321,28 @@ class LLMProxy:
         except Exception as exc:
             logger.warning(
                 "Primary model '%s' failed: %s — trying fallback.",
-                req.model.name, exc,
+                req.model.name,
+                exc,
             )
             return await self._fallback(req, exc)
 
-    async def _call(
-        self, req: ProxyRequest, model: ModelConfig
-    ) -> ProxyResponse:
+    async def _call(self, req: ProxyRequest, model: ModelConfig) -> ProxyResponse:
         """Single upstream call using generic request builder."""
         url, headers, body = _build_request(req, model)
         timeout = model.resilience.timeout_seconds
 
         logger.info(
             "→ %s  model=%s  timeout=%.1fs",
-            model.provider, model.model_id, timeout,
+            model.provider,
+            model.model_id,
+            timeout,
         )
 
         response = await self._client.post(
-            url, headers=headers, json=body, timeout=timeout,
+            url,
+            headers=headers,
+            json=body,
+            timeout=timeout,
         )
 
         if response.status_code != 200:
@@ -346,7 +352,7 @@ class LLMProxy:
             )
 
         result = _parse_response(response.json(), model)
-        result.was_fallback = (model.name != req.model.name)
+        result.was_fallback = model.name != req.model.name
 
         logger.info(
             "← %s  in=%d  out=%d  fallback=%s",
@@ -391,12 +397,15 @@ class LLMProxy:
 
         logger.info(
             "→ stream  %s  model=%s  timeout=%.1fs",
-            req.model.provider, req.model.model_id, timeout,
+            req.model.provider,
+            req.model.model_id,
+            timeout,
         )
 
         try:
             async with self._client.stream(
-                "POST", url,
+                "POST",
+                url,
                 headers=headers,
                 json=body,
                 timeout=timeout,
@@ -411,11 +420,11 @@ class LLMProxy:
         except Exception as exc:
             logger.warning(
                 "Streaming from '%s' failed: %s — falling back.",
-                req.model.name, exc,
+                req.model.name,
+                exc,
             )
             fallback_response = await self._fallback(req, exc)
             yield fallback_response.content
-
 
     def estimate_cost(self, text: str, model: ModelConfig) -> float:
         """Estimate input cost in USD. Uses 4 chars ≈ 1 token heuristic."""

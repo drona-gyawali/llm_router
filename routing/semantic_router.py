@@ -4,7 +4,7 @@ import json
 import logging
 import uuid
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Final
 
@@ -14,7 +14,6 @@ from sentence_transformers import SentenceTransformer
 from config.settings import MODEL_REGISTRY, ROUTING_CONFIG, ModelConfig
 
 logger = logging.getLogger(__name__)
-
 
 
 @dataclass(frozen=True)
@@ -76,9 +75,7 @@ class SemanticRouter:
 
     _DEFAULT_CONFIG: Final[SemanticRouterConfig] = SemanticRouterConfig()
 
-    def __init__(
-        self, config: SemanticRouterConfig = _DEFAULT_CONFIG
-    ) -> None:
+    def __init__(self, config: SemanticRouterConfig = _DEFAULT_CONFIG) -> None:
         self._config = config
 
         # Read category→model mapping from ROUTING_CONFIG (models.yaml)
@@ -92,9 +89,7 @@ class SemanticRouter:
 
         # Load embedding model
         logger.info("Loading semantic router model: %s", config.model_name)
-        self._model: Final[SentenceTransformer] = SentenceTransformer(
-            config.model_name
-        )
+        self._model: Final[SentenceTransformer] = SentenceTransformer(config.model_name)
 
         # Load reference embeddings
         self._refs: dict[str, np.ndarray] = {}
@@ -140,7 +135,6 @@ class SemanticRouter:
         if not self._refs:
             raise RuntimeError("SemanticRouter: no usable categories loaded.")
 
-
     @staticmethod
     def _normalize(matrix: np.ndarray) -> np.ndarray:
         norms = np.linalg.norm(matrix, axis=1, keepdims=True)
@@ -165,10 +159,10 @@ class SemanticRouter:
         if model is None:
             logger.warning(
                 "Category '%s' maps to '%s' which is not in MODEL_REGISTRY.",
-                category, model_name,
+                category,
+                model_name,
             )
         return model
-
 
     def route(self, text: str) -> SemanticRoutingDecision:
         """
@@ -182,8 +176,7 @@ class SemanticRouter:
 
         # Score all categories
         all_scores: dict[str, float] = {
-            cat: float(np.max(np.dot(vec, ref.T)))
-            for cat, ref in self._refs.items()
+            cat: float(np.max(np.dot(vec, ref.T))) for cat, ref in self._refs.items()
         }
 
         # Filter to categories clearing their threshold
@@ -209,12 +202,13 @@ class SemanticRouter:
                 f"Threshold    : {threshold:.2f}",
                 f"Model        : {model.name if model else 'NOT FOUND'}",
                 f"Provider     : {model.provider if model else 'N/A'}",
-                f"Mapping from : models.yaml routing.categories",
+                "Mapping from : models.yaml routing.categories",
                 f"All scores   : {scores_str}",
             ]
             logger.info(
                 "SemanticRouter → category=%-12s  confidence=%.4f  model=%s",
-                best_category, confidence,
+                best_category,
+                confidence,
                 model.name if model else "NOT FOUND",
             )
         else:
@@ -230,12 +224,13 @@ class SemanticRouter:
             ]
             logger.info(
                 "SemanticRouter → no match  best_score=%.4f  fallback=%s",
-                confidence, self._fallback_model_name,
+                confidence,
+                self._fallback_model_name,
             )
 
         return SemanticRoutingDecision(
             id=uuid.uuid4(),
-            timestamp=datetime.now(timezone.utc),
+            timestamp=datetime.now(UTC),
             category=best_category,
             confidence=confidence,
             threshold=threshold,
@@ -248,7 +243,6 @@ class SemanticRouter:
         """Return similarity scores for all categories without routing."""
         vec = self._encode(text)
         scores = {
-            cat: float(np.max(np.dot(vec, ref.T)))
-            for cat, ref in self._refs.items()
+            cat: float(np.max(np.dot(vec, ref.T))) for cat, ref in self._refs.items()
         }
         return dict(sorted(scores.items(), key=lambda x: -x[1]))

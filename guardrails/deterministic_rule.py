@@ -1,25 +1,24 @@
-
 from __future__ import annotations
 
 import logging
 import re
 import unicodedata
 import uuid
-
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Final, Literal
 
 __all__ = [
     "Action",
+    "DeterministicRuleGuard",
     "GuardConfig",
     "GuardResponse",
-    "DeterministicRuleGuard",
 ]
 
 logger = logging.getLogger(__name__)
 
 Action = Literal["allow", "redact", "block"]
+
 
 @dataclass(frozen=True)
 class GuardConfig:
@@ -50,8 +49,6 @@ class GuardConfig:
 
 
 _DEFAULT_CONFIG: Final[GuardConfig] = GuardConfig()
-
-
 
 
 @dataclass(frozen=True)
@@ -114,7 +111,7 @@ def _make_response(
 ) -> GuardResponse:
     resp = GuardResponse(
         id=uuid.uuid4(),
-        timestamp=datetime.now(timezone.utc),
+        timestamp=datetime.now(UTC),
         type=rule_type,
         action=action,
         content=content,
@@ -168,11 +165,7 @@ class DeterministicRuleGuard:
     )
 
     _SSN_RE: Final = re.compile(
-        r"(?<!\d)"
-        r"(?!000|666|9\d\d)\d{3}"
-        r"-(?!00)\d{2}"
-        r"-(?!0000)\d{4}"
-        r"(?!\d)"
+        r"(?<!\d)" r"(?!000|666|9\d\d)\d{3}" r"-(?!00)\d{2}" r"-(?!0000)\d{4}" r"(?!\d)"
     )
 
     # Phone: require an explicit separator or parentheses so plain digit
@@ -282,7 +275,6 @@ class DeterministicRuleGuard:
         # NFC normalization collapses unicode lookalikes into canonical form.
         self._payload: Final[str] = unicodedata.normalize("NFC", content)
         self._config: Final[GuardConfig] = config
-
 
     @staticmethod
     def _luhn_valid(digits: str) -> bool:
@@ -475,7 +467,6 @@ class DeterministicRuleGuard:
             findings=[],
             logs=["No PII patterns matched"],
         )
-
 
     def evaluate(self) -> GuardResponse:
         """

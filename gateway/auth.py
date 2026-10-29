@@ -3,20 +3,21 @@
 
 ## user enter the details we provide the key and all susbequent request must be verified..
 
-from dataclasses import dataclass
-import secrets
 import hashlib
-import logging
-from types import SimpleNamespace
-from typing import Any, Optional, Protocol, Tuple, Union
-import uuid
-from sqlalchemy import select
-from db.models import TenantModel, ApiKeyModel
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.exc import SQLAlchemyError
-from config.settings import CACHE_REGISTRY
-from redis import RedisError
 import json
+import logging
+import secrets
+import uuid
+from dataclasses import dataclass
+from typing import Protocol
+
+from redis import RedisError
+from sqlalchemy import select
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from config.settings import CACHE_REGISTRY
+from db.models import ApiKeyModel, TenantModel
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -36,7 +37,6 @@ class TenantRecord(Protocol):
     is_active: bool
     monthly_budget: float
     current_spend: float
-
 
 
 def generate_api_key() -> tuple[str, str, str]:
@@ -65,10 +65,10 @@ def hash_key(raw_key: str) -> str:
 def parse_cached_json(
     cached_string: str,
 ) -> tuple[
-    Optional[uuid.UUID],
-    Optional[bool],
-    Optional[uuid.UUID],
-    Optional[CachedTenantRecord],
+    uuid.UUID | None,
+    bool | None,
+    uuid.UUID | None,
+    CachedTenantRecord | None,
 ]:
     """
     Parse cached Redis JSON and reconstruct typed tenant data.
@@ -130,10 +130,10 @@ async def verify_hash(
     db: AsyncSession,
     raw_key: str,
 ) -> tuple[
-    Optional[uuid.UUID],
-    Optional[bool],
-    Optional[uuid.UUID],
-    Optional[TenantRecord],
+    uuid.UUID | None,
+    bool | None,
+    uuid.UUID | None,
+    TenantRecord | None,
 ]:
     """
     Verify an API key using Redis first and the database as a fallback.
@@ -202,15 +202,11 @@ async def verify_hash(
         row = result.first()
 
     except SQLAlchemyError:
-        logger.exception(
-            "[DATABASE ERROR]: Failed to verify the API key hash"
-        )
+        logger.exception("[DATABASE ERROR]: Failed to verify the API key hash")
         return None, None, None, None
 
     except Exception:
-        logger.exception(
-            "[UNEXPECTED ERROR]: Database verification failed"
-        )
+        logger.exception("[UNEXPECTED ERROR]: Database verification failed")
         return None, None, None, None
 
     if row is None:

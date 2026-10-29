@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
-from typing import AsyncGenerator
 
 from fastapi import FastAPI
 
@@ -20,10 +20,10 @@ logger = logging.getLogger("uvicorn.error")
 async def lifespan(app: FastAPI) -> AsyncGenerator:
     logger.info("Starting LLM Router...")
 
-    app.state.proxy           = LLMProxy()
-    app.state.rule_router     = RuleBasedRouter()
+    app.state.proxy = LLMProxy()
+    app.state.rule_router = RuleBasedRouter()
     app.state.semantic_router = SemanticRouter()
-    app.state.semantic_guard  = SemanticGuard()
+    app.state.semantic_guard = SemanticGuard()
 
     logger.info("LLM Router ready.")
     yield

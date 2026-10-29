@@ -2,18 +2,19 @@ from __future__ import annotations
 
 import json
 import logging
-
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Final, Literal
-from guardrails.deterministic_rule import _make_response, GuardResponse
+
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
+from guardrails.deterministic_rule import GuardResponse, _make_response
+
 __all__ = [
     "Action",
-    "SemanticConfig",
     "GuardResponse",
+    "SemanticConfig",
     "SemanticGuard",
 ]
 
@@ -50,13 +51,9 @@ class SemanticConfig:
 
     def __post_init__(self) -> None:
         if not self.references_dir.is_dir():
-            raise ValueError(
-                f"references_dir does not exist: {self.references_dir}"
-            )
+            raise ValueError(f"references_dir does not exist: {self.references_dir}")
         if not self.thresholds_file.is_file():
-            raise ValueError(
-                f"thresholds_file does not exist: {self.thresholds_file}"
-            )
+            raise ValueError(f"thresholds_file does not exist: {self.thresholds_file}")
 
 
 class SemanticGuard:
@@ -118,9 +115,7 @@ class SemanticGuard:
             )
 
         logger.info("Loading semantic model: %s", config.model_name)
-        self._model: Final[SentenceTransformer] = SentenceTransformer(
-            config.model_name
-        )
+        self._model: Final[SentenceTransformer] = SentenceTransformer(config.model_name)
 
         # _refs: category → (N, 384) L2-normalised float32 matrix
         # _thresholds: category → float
@@ -134,14 +129,16 @@ class SemanticGuard:
             except Exception as exc:
                 logger.error(
                     "Failed to load reference embeddings for '%s': %s",
-                    category, exc,
+                    category,
+                    exc,
                 )
                 continue
 
             if matrix.ndim != 2 or matrix.shape[0] == 0:
                 logger.error(
                     "Invalid embedding shape %s for '%s' — skipping",
-                    matrix.shape, category,
+                    matrix.shape,
+                    category,
                 )
                 continue
 
@@ -155,10 +152,7 @@ class SemanticGuard:
             )
 
         if not self._refs:
-            raise RuntimeError(
-                "SemanticGuard initialised with no usable categories."
-            )
-
+            raise RuntimeError("SemanticGuard initialised with no usable categories.")
 
     @staticmethod
     def _normalize(matrix: np.ndarray) -> np.ndarray:
@@ -175,8 +169,7 @@ class SemanticGuard:
             convert_to_numpy=True,
             normalize_embeddings=False,
         ).astype(np.float32)
-        return self._normalize(vec)   # shape (1, 384)
-
+        return self._normalize(vec)  # shape (1, 384)
 
     def check_category(self, text: str, category: str) -> GuardResponse:
         """
@@ -202,9 +195,9 @@ class SemanticGuard:
                 logs=[f"Category '{category}' not loaded — skipping"],
             )
 
-        vec = self._encode(text)                          # (1, 384)
-        ref_matrix = self._refs[category]                 # (N, 384)
-        similarities = np.dot(vec, ref_matrix.T)          # (1, N)
+        vec = self._encode(text)  # (1, 384)
+        ref_matrix = self._refs[category]  # (N, 384)
+        similarities = np.dot(vec, ref_matrix.T)  # (1, N)
         max_sim = float(np.max(similarities))
         threshold = self._thresholds[category]
 
@@ -230,7 +223,6 @@ class SemanticGuard:
                 f"max_similarity={max_sim:.4f} < threshold={threshold:.2f}"
             ],
         )
-
 
     def evaluate(self, text: str) -> GuardResponse:
         """
@@ -268,11 +260,11 @@ class SemanticGuard:
         blocked = False
 
         # Encode once, reuse for all categories.
-        vec = self._encode(text)   # (1, 384)
+        vec = self._encode(text)  # (1, 384)
 
         for category in sorted(self._refs):
-            ref_matrix = self._refs[category]             # (N, 384)
-            similarities = np.dot(vec, ref_matrix.T)      # (1, N)
+            ref_matrix = self._refs[category]  # (N, 384)
+            similarities = np.dot(vec, ref_matrix.T)  # (1, N)
             max_sim = float(np.max(similarities))
             threshold = self._thresholds[category]
 

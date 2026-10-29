@@ -1,0 +1,20 @@
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+
+[tool.ruff.lint]
+# Select rules: E/W (Pycodestyle), F (Pyflakes), I (isort), B (Flake8-bugbear)
+select = ["E", "W", "F", "I", "B"]
+ignore = [
+    "E501",    # Line length handled by Black formatter
+    "B008",    # Do not perform function calls in argument defaults (Required for FastAPI Depends())
+    "BLE001",  # Do not catch blind exception: Exception (Required for resilient gateway proxy and guardrail error boundaries)
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["gateway", "proxy", "routing", "guardrails", "db", "config", "api"]
