@@ -15,6 +15,7 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine,
 )
+from sqlalchemy.pool import NullPool
 
 # ── Project imports ────────────────────────────────────────────────────────────
 from db.models import Base
@@ -28,12 +29,19 @@ TEST_DATABASE_URL = os.environ.get(
 )
 USING_POSTGRES = TEST_DATABASE_URL.startswith("postgresql")
 
-engine = create_async_engine(TEST_DATABASE_URL, echo=False)
+# NullPool disables connection reuse — each session gets a fresh connection.
+# This is required for asyncpg in tests to avoid "another operation in progress".
+engine = create_async_engine(
+    TEST_DATABASE_URL,
+    echo=False,
+    poolclass=NullPool if USING_POSTGRES else None,
+)
 TestingSessionLocal = async_sessionmaker(
     bind=engine, class_=AsyncSession, expire_on_commit=False
 )
 
 
+# ── Fixtures ───────────────────────────────────────────────────────────────────
 
 @pytest_asyncio.fixture(scope="session", autouse=True)
 async def create_tables():
@@ -81,6 +89,7 @@ async def client() -> AsyncGenerator[AsyncClient, None]:
     app.dependency_overrides.clear()
 
 
+# ── Helper ─────────────────────────────────────────────────────────────────────
 
 async def create_tenant_and_key(
     client: AsyncClient,
@@ -105,6 +114,11 @@ async def create_tenant_and_key(
     raw_key = key_resp.json()["raw_key"]
 
     return tenant, raw_key
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# Tenant Endpoints
+# ══════════════════════════════════════════════════════════════════════════════
 
 class TestCreateTenant:
     async def test_create_tenant_success(self, client: AsyncClient):
@@ -178,6 +192,10 @@ class TestGetTenant:
         resp = await client.get("/auth/tenants/not-a-uuid")
         assert resp.status_code == 422
 
+
+# ══════════════════════════════════════════════════════════════════════════════
+# API Key Endpoints
+# ══════════════════════════════════════════════════════════════════════════════
 
 class TestCreateApiKey:
     async def test_create_key_returns_raw_key_once(self, client: AsyncClient):
@@ -277,6 +295,10 @@ class TestRevokeApiKey:
         resp = await client.delete(f"/auth/keys/{uuid.uuid4()}")
         assert resp.status_code == 404
 
+
+# ══════════════════════════════════════════════════════════════════════════════
+# Auth Middleware (verify_api_key)
+# ══════════════════════════════════════════════════════════════════════════════
 
 class TestAuthMiddleware:
     """

@@ -14,6 +14,7 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine,
 )
+from sqlalchemy.pool import NullPool
 
 from db.models import Base, TenantModel, ApiKeyModel
 from db.session import get_db
@@ -27,7 +28,11 @@ TEST_DATABASE_URL = os.environ.get(
 )
 USING_POSTGRES = TEST_DATABASE_URL.startswith("postgresql")
 
-test_engine = create_async_engine(TEST_DATABASE_URL, echo=False)
+test_engine = create_async_engine(
+    TEST_DATABASE_URL,
+    echo=False,
+    poolclass=NullPool if USING_POSTGRES else None,
+)
 TestingSessionLocal = async_sessionmaker(
     bind=test_engine, class_=AsyncSession, expire_on_commit=False
 )
@@ -74,6 +79,7 @@ async def client():
     app.dependency_overrides.clear()
 
 
+# ── Seed helpers ───────────────────────────────────────────────────────────────
 
 async def seed_tenant(
     spend: float = 90.0,
