@@ -2,13 +2,23 @@
 line-length = 88
 target-version = ['py311']
 include = '\.pyi?$'
+# This regex tells Black to skip the alembic/versions folder
+exclude = '''
+/(
+    \.git
+    | \.venv
+    | \.env
+    | alembic/versions
+)/
+'''
 
 [tool.ruff]
 target-version = "py311"
 line-length = 88
+# This tells Ruff to skip the alembic/versions folder
+exclude = ["alembic/versions/*"]
 
 [tool.ruff.lint]
-# Select rules: E/W (Pycodestyle), F (Pyflakes), I (isort), B (Flake8-bugbear)
 select = ["E", "W", "F", "I", "B"]
 ignore = [
     "E501",    # Line length handled by Black formatter
