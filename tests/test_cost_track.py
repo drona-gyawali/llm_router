@@ -5,6 +5,7 @@ import os
 import uuid
 from unittest.mock import AsyncMock, MagicMock, patch
 
+
 import pytest
 import pytest_asyncio
 from httpx import AsyncClient, ASGITransport
@@ -34,38 +35,37 @@ TestingSessionLocal = async_sessionmaker(
 
 @pytest_asyncio.fixture(scope="module", autouse=True)
 async def create_tables():
-    async with test_engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    if not USING_POSTGRES:
+        async with test_engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
     yield
-    async with test_engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
+    if not USING_POSTGRES:
+        async with test_engine.begin() as conn:
+            await conn.run_sync(Base.metadata.drop_all)
 
 
 @pytest_asyncio.fixture()
-async def db():
-    async with TestingSessionLocal() as session:
-        yield session
-
-
-@pytest_asyncio.fixture()
-async def client(db: AsyncSession):
+async def client():
     """
-    AsyncClient wired to SQLite.
-    Patches both get_db AND db.session.engine so no Postgres connection
-    is ever attempted.
+    AsyncClient wired to test DB.
+    Each request gets its own session — required for Postgres/asyncpg.
     """
     async def override_get_db():
-        yield db
+        async with TestingSessionLocal() as session:
+            try:
+                yield session
+                await session.commit()
+            except Exception:
+                await session.rollback()
+                raise
 
     app.dependency_overrides[get_db] = override_get_db
 
-    # Patch the module-level engine in db.session to prevent Postgres init
     mock_redis = AsyncMock()
     mock_redis.get.return_value = None
     mock_redis.setex.return_value = True
 
-    with patch("db.session.engine", test_engine), \
-         patch("gateway.auth.CACHE_REGISTRY", mock_redis):
+    with patch("gateway.auth.CACHE_REGISTRY", mock_redis):
         async with AsyncClient(
             transport=ASGITransport(app=app), base_url="http://test"
         ) as ac:
@@ -74,35 +74,34 @@ async def client(db: AsyncSession):
     app.dependency_overrides.clear()
 
 
-# ── Seed helpers ───────────────────────────────────────────────────────────────
 
 async def seed_tenant(
-    db: AsyncSession,
     spend: float = 90.0,
     budget: float = 100.0,
 ) -> tuple[uuid.UUID, str]:
     """Insert a tenant at given spend/budget and one active API key."""
-    tenant = TenantModel(
-        id=uuid.uuid4(),
-        name=f"Race Tenant {uuid.uuid4().hex[:6]}",
-        currency="USD",
-        monthly_budget=budget,
-        current_spend=spend,
-        is_active=True,
-    )
-    db.add(tenant)
+    async with TestingSessionLocal() as db:
+        tenant = TenantModel(
+            id=uuid.uuid4(),
+            name=f"Race Tenant {uuid.uuid4().hex[:6]}",
+            currency="USD",
+            monthly_budget=budget,
+            current_spend=spend,
+            is_active=True,
+        )
+        db.add(tenant)
 
-    raw_key, key_prefix, key_hash = generate_api_key()
-    api_key = ApiKeyModel(
-        id=uuid.uuid4(),
-        tenant_id=tenant.id,
-        key_prefix=key_prefix,
-        key_hash=key_hash,
-        name="race-key",
-        is_active=True,
-    )
-    db.add(api_key)
-    await db.commit()
+        raw_key, key_prefix, key_hash = generate_api_key()
+        api_key = ApiKeyModel(
+            id=uuid.uuid4(),
+            tenant_id=tenant.id,
+            key_prefix=key_prefix,
+            key_hash=key_hash,
+            name="race-key",
+            is_active=True,
+        )
+        db.add(api_key)
+        await db.commit()
     return tenant.id, raw_key
 
 
@@ -133,17 +132,13 @@ def _mock_app_state():
     app.state.proxy.forward = AsyncMock(return_value=proxy_resp)
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# Tests
-# ══════════════════════════════════════════════════════════════════════════════
-
 class TestBudgetRaceCondition:
 
     async def test_already_at_limit_blocks_immediately(
-        self, client: AsyncClient, db: AsyncSession
+        self, client: AsyncClient
     ):
         """Tenant at exactly the budget limit must be blocked on first request."""
-        _, raw_key = await seed_tenant(db, spend=100.0, budget=100.0)
+        _, raw_key = await seed_tenant(spend=100.0, budget=100.0)
 
         resp = await client.post(
             "/chat",
@@ -154,10 +149,10 @@ class TestBudgetRaceCondition:
         assert "budget" in resp.json()["detail"].lower()
 
     async def test_over_limit_blocks_immediately(
-        self, client: AsyncClient, db: AsyncSession
+        self, client: AsyncClient
     ):
         """Tenant over budget must also be blocked."""
-        _, raw_key = await seed_tenant(db, spend=150.0, budget=100.0)
+        _, raw_key = await seed_tenant(spend=150.0, budget=100.0)
 
         resp = await client.post(
             "/chat",
@@ -167,7 +162,7 @@ class TestBudgetRaceCondition:
         assert resp.status_code == 429
 
     async def test_concurrent_requests_race_condition(
-        self, client: AsyncClient, db: AsyncSession
+        self, client: AsyncClient
     ):
         """
         Fire 10 simultaneous requests against a tenant with spend=90, budget=100.
@@ -180,7 +175,7 @@ class TestBudgetRaceCondition:
             Only 1 should pass. Flip the assert at the bottom once fixed.
         """
         _mock_app_state()
-        _, raw_key = await seed_tenant(db, spend=90.0, budget=100.0)
+        _, raw_key = await seed_tenant(spend=90.0, budget=100.0)
 
         payload = {"messages": [{"role": "user", "content": "Hello"}]}
         headers = {"X-API-KEY": raw_key}

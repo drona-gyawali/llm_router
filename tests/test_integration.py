@@ -34,49 +34,42 @@ TestingSessionLocal = async_sessionmaker(
 )
 
 
-# ── Fixtures ───────────────────────────────────────────────────────────────────
 
 @pytest_asyncio.fixture(scope="session", autouse=True)
 async def create_tables():
     """Create all tables once for the test session."""
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    if not USING_POSTGRES:
+        # Postgres uses alembic migrations; SQLite needs explicit create
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
     yield
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
+    if not USING_POSTGRES:
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.drop_all)
 
 
 @pytest_asyncio.fixture()
-async def db_session() -> AsyncGenerator[AsyncSession, None]:
-    """
-    Yields a fresh transaction for every test, rolls back at the end
-    so tests are fully isolated.
-    """
-    async with engine.connect() as conn:
-        await conn.begin()
-        session = AsyncSession(bind=conn, expire_on_commit=False)
-        try:
-            yield session
-        finally:
-            await session.close()
-            await conn.rollback()
-
-
-@pytest_asyncio.fixture()
-async def client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
+async def client() -> AsyncGenerator[AsyncClient, None]:
     """
     Provides an AsyncClient wired to the test DB.
+    Each test gets its own session to avoid asyncpg concurrency issues.
     Redis is mocked out so no real Redis is required.
     """
 
     async def override_get_db():
-        yield db_session
+        # Fresh session per request — required for Postgres/asyncpg
+        async with TestingSessionLocal() as session:
+            try:
+                yield session
+                await session.commit()
+            except Exception:
+                await session.rollback()
+                raise
 
     app.dependency_overrides[get_db] = override_get_db
 
-    # Mock Redis so cache calls are no-ops
     mock_redis = AsyncMock()
-    mock_redis.get.return_value = None          # cache miss by default
+    mock_redis.get.return_value = None
     mock_redis.setex.return_value = True
 
     with patch("gateway.auth.CACHE_REGISTRY", mock_redis):
@@ -112,8 +105,6 @@ async def create_tenant_and_key(
     raw_key = key_resp.json()["raw_key"]
 
     return tenant, raw_key
-
-
 
 class TestCreateTenant:
     async def test_create_tenant_success(self, client: AsyncClient):
